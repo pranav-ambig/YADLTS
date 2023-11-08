@@ -6,19 +6,18 @@ import uuid
 import flask
 import threading
 import concurrent.futures
-
+import statistics
 
 # PRODUCER SETTINGS
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
-
 # CONSUMER SETTINGS
 consumer_settings = {
     'bootstrap_servers': 'localhost:9092',  # Address of the Kafka broker(s)
-    #'group_id': 'popularity',  # Specify a unique group ID for the consumer
+    # 'group_id': 'popularity',  # Specify a unique group ID for the consumer
     'auto_offset_reset': 'latest',  # Start consuming from the earliest available offset
-    #'enable_auto_commit': True,  # Automatically commit offsets
-    #'key_deserializer': None,  # Deserializer for message keys
+    # 'enable_auto_commit': True,  # Automatically commit offsets
+    # 'key_deserializer': None,  # Deserializer for message keys
     'value_deserializer': lambda x: json.loads(x.decode('utf-8'))  # JSON deserializer for message values
 }
 
@@ -27,91 +26,105 @@ driver_reg_consumer = KafkaConsumer("register", **consumer_settings)
 driver_metrics = KafkaConsumer("metrics", **consumer_settings)
 driver_heartbeat = KafkaConsumer("heartbeat", **consumer_settings)
 
-
 # STORAGE
 drivers = {}
 heartbeats = {}
 metrics = {}
 
-# FUNCTIONALITY 
+
+# FUNCTIONALITY
 
 # lets define a function to push the message according to the topics
 def to_consumer(producer, topic, message):
-
     producer.flush()
     producer.send(topic, value=json.dumps(message).encode('utf-8'))
-   
-   
-     
+
+
 # topics as producer --- trigger, test_config
 def trigger_push():
+    trigger_msg = {
+        "test_id": str(uuid.uuid4()),
+        "trigger": "YES"
+    }
 
-	trigger_msg = { 
-		"test_id": str(uuid.uuid4()),
-		"trigger": "YES"
-		}
-	
-	to_consumer(producer, "trigger", trigger_msg)
-	
-	with concurrent.futures.ThreadPoolExecutor() as executor:
-		heartbeat_thread = executor.submit(driver_heartbeat)
-		metrics_thread = executor.submit(driver_metrics)
-		# Wait for heartbeat_thread to complete
-		concurrent.futures.wait([heartbeat_thread])
-		# Cancel metrics_thread when heartbeat_thread ends
-		metrics_thread.cancel()
-	
-	# aggregating the metrics and storing it with key as test_id
-	for node_id in drivers.keys():
-		key = node_id+trigger_msg["test_id"]
-		metric = {
-			#TODO
-		}
-		
-			
+    to_consumer(producer, "trigger", trigger_msg)
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        heartbeat_thread = executor.submit(driver_heartbeat)
+        metrics_thread = executor.submit(driver_metrics)
+        # Wait for heartbeat_thread to complete
+        concurrent.futures.wait([heartbeat_thread])
+        # Cancel metrics_thread when heartbeat_thread ends
+        metrics_thread.cancel()
+
+    # aggregating the metrics and storing it with key as test_id
+    metric = {
+        "mean_latency": [],
+        "median_latency": [],
+        "min_latency": [],
+        "max_latency": [],
+    }
+    for node_id in drivers.keys():
+        key = node_id + trigger_msg["test_id"]
+        metric["mean_latency"].append(metrics[key]["mean_latency"])
+        metric["median_latency"].append(metrics[key]["median_latency"])
+        metric["min_latency"].append(metrics[key]["min_latency"])
+        metric["max_latency"].append(metrics[key]["max_latency"])
+
+    metric["mean_latency"] = sum(metric["mean_latency"]) / len(metric["mean_latency"])
+    metric["median_latency"] = statistics.median(metric["median_latency"])
+    metric["min_latency"] = min(metric["min_latency"])
+    metric["max_latency"] = max(metric["max_latency"])
+
+    metrics[trigger_msg["test_id"]] = metric
+
+
 def test_config_push(test_type, test_message_delay):
-	
-	config_msg = {
-	"test_id": str(uuid.uuid4()),
-	"test_type": test_type,
-	"test_message_delay": test_message_delay,
-	}
-	
-	to_consumer(producer, "test_config", config_msg)
+    config_msg = {
+        "test_id": str(uuid.uuid4()),
+        "test_type": test_type,
+        "test_message_delay": test_message_delay,
+    }
+
+    to_consumer(producer, "test_config", config_msg)
+
 
 # topics as consumer --- register, metrics, heartbeat
 def driver_register():
+    reg_msg = "DRIVER_NODE_REGISTER"
+    for message in driver_reg_consumer:
+        data = message.value
+        if data["message_type"] == reg_msg and data["node_id"] not in drivers.keys():
+            drivers[data["node_id"]] = data["node_IP"]
 
-	reg_msg = "DRIVER_NODE_REGISTER"
-	for message in driver_reg_consumer:
-    		data = message.value
-    		if data["message_type"] == reg_msg and data["node_id"] not in drivers.keys():
-    			drivers[data["node_id"]] = data["node_IP"]
-    			 		 
+
 def driver_metrics():
+    # the metrics dict will contain 'node_idtest_id' as keys and the aggregated final metrics of the test will be
+    # stored in the key 'test_id'
 
-	# the metrics dict will contain 'node_idtest_id' as keys and the aggregated final metrics of the test will be stored in the key 'test_id'
-	
-	for message in driver_metrics:
-		data = message.value
-		key = data["node_id"]+data["test_id"]
-		value = data["metrics"]
-		metrics[key] = value
+    for message in driver_metrics:
+        data = message.value
+        if heartbeats[data["node_id"]] == "YES":
+            key = data["node_id"] + data["test_id"]
+            value = data["metrics"]
+            metrics[key] = value
+    # this function terminates when heartbeat terminates. handled while calling on different threads.
+
 
 def driver_heartbeat():
-	
-	for message in driver_heartbeat:
-		data = message.value
-		heartbeats[data["node_id"]] = data["heartbeat"]
-		knockout_check = all(value == "NO" for value in heartbeats.values())
-		if knockout_check:
-			break	
-		
-		
+    for message in driver_heartbeat:
+        data = message.value
+        heartbeats[data["node_id"]] = data["heartbeat"]
+        knockout_check = all(value == "NO" for value in heartbeats.values())
+        if knockout_check:
+            break
+
+
 # FUNCTION CALLS
 
-register_thread = threading.Thread(target = driver_register)
-register_thread.start() # running the driver register function indefinitely to service all the registers with an isolated thread
+register_thread = threading.Thread(target=driver_register)
+register_thread.start()  # running the driver register function indefinitely to service all the registers with an
+# isolated thread
 
 test_config_push("AVALANCHE", 10)
 trigger_push()
