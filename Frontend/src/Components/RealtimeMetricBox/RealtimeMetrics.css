@@ -1,0 +1,15 @@
+.RealtimeMetricBox {
+    height: 80%;
+}
+
+.RealtimeMetricBox > .stats {
+    display: grid;
+    margin: 2rem 1rem;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    font-size: 1.3rem;
+}
+
+#stat-title {
+    margin-left: 1rem;
+}

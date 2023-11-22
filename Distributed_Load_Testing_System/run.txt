@@ -1,0 +1,32 @@
+# To start Kafka
+sudo systemctl start kafka
+
+# To check the status of Kafka
+sudo systemctl status kafka
+
+# To stop kafka
+sudo systemctl stop kafka
+
+
+# for creating topics(change topicName1 to anything):
+/usr/local/kafka/bin/kafka-topics.sh --create --topic topicName --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+# for topic outputs(whatver is being pushed through pipelines):
+/usr/local/kafka/bin/kafka-console-consumer.sh --topic topicName --from-beginning --bootstrap-server localhost:9092
+
+# for deleting the topic:
+/usr/local/kafka/bin/kafka-topics.sh --delete --topic topicName --bootstrap-server localhost:9092
+
+############################################
+
+1) start Kafka
+sudo systemctl start kafka
+ 
+2) start server.js first
+node server.js
+
+3) start orchestrator.py
+python3 orchestrator.py localhost:9092
+
+4) start driver.py 
+python3 driver.py http://localhost:5052 localhost:9092

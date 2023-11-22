@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Roboto:wght@300;400&display=swap');
+
+:root {
+  
+  font-family: 'Quicksand', sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Variables */
+:root {
+  --fs-title: 2.5rem;
+  --fs-h1: 2rem;
+  --fs-h2: 1.8rem;
+  --fs-h3: 1.6rem;
+  --fs-h4: 1rem;
+  --Charizard: #EC8F5E;
+  --Blastoise: #A0E9FF;
+  --Venusaur: #409b1f;
+  --Tentacruel: #FF409A ;
+  --Pikachu: #fcdc3f;
+  --Zapdos: #FFFB73;
+  --Mewtwo: #b780eb;
+  --Snivy: #61cc3a;
+}
+
+body {
+  background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%);
+}

@@ -1,0 +1,29 @@
+.History {
+    width: 100%;
+    /* height: 100vh; */
+    margin-left: 2rem;
+}
+
+.History > .title {
+    text-align: center;
+    margin: 1rem;
+}
+
+.History > .spacer {
+    margin-top: 3rem;
+}
+
+.history-blocks {
+    height: 90%;
+}
+
+.test-metric-block {
+    display: grid;
+    padding: 1rem;
+    margin: 1rem 0rem;
+    grid-template-columns: 2fr 1fr;
+    background-color: #59588D4D;
+    align-items: center;
+    border-radius: 1rem;
+    height: 15rem;
+}

@@ -1,0 +1,75 @@
+.SideBar {
+    width: 15rem;
+    background: linear-gradient(180deg, rgba(38, 34, 80, 0.65) 0%, rgba(27, 25, 66, 0.85) 57.44%, #17163B 100%);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-area: "sidebar";
+    position: fixed;
+}
+
+p {
+    font-size: 10px;
+}
+
+.heading {
+    font-size: var(--fs-h3);
+    color: white;
+    margin: 5rem 0;
+}
+
+.links {
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.links > p {
+    margin: 1rem;
+    font-size: var(--fs-h4);
+    cursor: pointer;
+}
+
+.Charizard {
+    color: var(--Charizard);
+    text-shadow: 0 0 15px var(--Charizard), 0 0 25px var(--Charizard);
+}
+
+.Blastoise {
+    color: var(--Blastoise);
+    text-shadow: 0 0 15px var(--Blastoise), 0 0 25px var(--Blastoise);
+}
+
+.Venusaur {
+    color: var(--Venusaur);
+    text-shadow: 0 0 15px var(--Venusaur), 0 0 25px var(--Venusaur);
+}
+
+.Tentacruel {
+    color: var(--Tentacruel);
+    text-shadow: 0 0 15px var(--Tentacruel), 0 0 25px var(--Tentacruel);
+}
+
+.Pikachu {
+    color: var(--Pikachu);
+    text-shadow: 0 0 15px var(--Pikachu), 0 0 25px var(--Pikachu);
+}
+
+.Zapdos {
+    color: var(--Zapdos);
+    text-shadow: 0 0 15px var(--Zapdos), 0 0 25px var(--Zapdos);
+}
+
+.Mewtwo {
+    color: var(--Mewtwo);
+    text-shadow: 0 0 15px var(--Mewtwo), 0 0 25px var(--Mewtwo);
+}
+
+.Snivy {
+    color: var(--Snivy);
+    text-shadow: 0 0 15px var(--Snivy), 0 0 25px var(--Snivy);
+}
+
+

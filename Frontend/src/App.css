@@ -1,0 +1,39 @@
+.App {
+  position: relative;
+  overflow-x: hidden;
+  /* display: flex;
+  width: 100%;
+  flex: 1; */
+}
+
+.routed-comp {
+  margin-left: 15rem;
+  width: calc(100vw - 20rem);
+}
+/* 
+.routed-comp{
+  padding-top: 6.5rem;
+} */
+
+/* .left-spaced:nth-child(2){
+  margin-top: 6.5rem;
+} */
+
+h1, h2, h3 {
+  color: white;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+
+/* .spacer {
+  width: 15rem;
+  height: 100vh;
+} */

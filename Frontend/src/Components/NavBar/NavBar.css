@@ -1,0 +1,27 @@
+.NavBar {
+    /* position: fixed; */
+    width: 93%;
+    height: 6.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0rem 2rem;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.right-links > a {
+    margin: 1.5rem;
+    color: white;
+    font-size: 1.2rem;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.curr-page {
+    font-size: var(--fs-title);
+}

@@ -1,0 +1,93 @@
+.Create {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+}
+
+.Create h2 {
+    font-size: 1.3rem;
+}
+
+.Create > * {
+    margin: 2rem;
+}
+
+.Create > .controls > * {
+    background-color: #59588D4D;
+    border-radius: 1rem;
+}
+
+.Create > .title {
+    /* text-align: center; */
+    margin-left: 2rem;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.form {
+    flex: 6;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 1rem;
+    padding: 2rem 1rem;
+    font-size: var(--fs-h4);
+}
+
+.form > h2 {
+    padding: 0.5rem 1rem;
+}
+
+
+.form > input, select {
+    all: unset;
+    background-color: #59588db4;
+    color: white;
+    opacity: 0.8;
+
+    padding: 0.5rem 1rem;
+
+    border-radius: 3rem;
+    outline: none;
+    font-size: 1.3rem;
+}
+
+.actions {
+    flex: 3;
+    text-align: center;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: relative;
+}
+
+.actions > h1 {
+    font-size: 1.8rem;
+}
+
+.actions > * {
+    /* background-color: #FF409A; */
+    border: 2px #fff solid;
+    /* color: white; */
+    /* width: 80%; */
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.actions > *:hover {
+    background-color: #FF409A;
+    border: 2px #FF409A solid;
+    box-shadow: 0 0 5px #FF409A, 0 0 10px #FF409A;
+}
+
+.actions > *:active {
+    background-color: #932759;
+    border: 2px #932759 solid;
+    box-shadow: 0 0 5px #932759, 0 0 10px #932759;
+}
