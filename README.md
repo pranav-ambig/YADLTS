@@ -42,18 +42,20 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 
    ```bash
    git clone https://github.com/pranav-ambig/YADLTS.git
-
+   ```
+   
 2. Navigate:
 
    ```bash
    cd distributed-load-testing
-
-
+   ```
+   
 3. Install requirements:
 
    ```bash
    pip install -r requirements.txt
-
+   ```
+   
 4. RUN:
 
    ```bash
@@ -61,6 +63,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
    npm install
    npm run dev
    ```
+   
    ```bash
    cd Distributed_Load_Testing_System
    sudo systemctl start kafka
