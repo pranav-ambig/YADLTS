@@ -122,7 +122,7 @@ We welcome contributions! Feel free to open issues for bug reports or feature re
 ***If you find this repository useful, kindly consider giving it a star ⭐️***
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the [MIT License](https://github.com/pranav-ambig/YADLTS/blob/main/MIT-LICENSE.txt)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
