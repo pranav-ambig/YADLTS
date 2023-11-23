@@ -1,4 +1,4 @@
-## For Installation Follow These-->
+# For Installation Follow These
 
 >[!NOTE]
 >If you donot have java 8
@@ -7,7 +7,7 @@ sudo apt-get update
 sudo apt-get install openjdk-8-jdk
 java -version
 ```
-> kafka installation(download kafka.sh)
+> kafka installation (download [kafka.sh](https://github.com/pranav-ambig/YADLTS/blob/main/Kafka/kafka.sh))
 ```bash
 chmod +x *.sh
 dos2unix *.sh
