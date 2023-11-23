@@ -25,8 +25,13 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 
 ### Built With
 
-* [![React][React.js]][React-url]
 * [![Apache Kafka][Apache Kafka.js]][kafka-url]
+* [![React][React.js]][React-url]
+* [![JavaScript][Js.js]][Js-url]
+* [![Flask][Flask.js]][Flask-url]
+* [![Python][Python.js]][Python-url]
+* [![Ubuntu][Ubuntu.js]][Ubuntu-url]
+
 
 ## Installation
 
@@ -126,8 +131,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/pranav-ambig/YADLTS/blob/main/MIT-LICENSE.txt
 
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-
 [Apache Kafka.js]: https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka
 [kafka-url]: https://kafka.apache.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Js.js]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
+[Js-url]: https://www.javascript.com/
+[Flask.js]: https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white
+[Flask-url]: https://flask.palletsprojects.com/en/3.0.x/
+[Python.js]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white
+[Python-url]: https://www.python.org
+[Ubuntu.js]: https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white
+[Ubuntu-url]: https://ubuntu.com/
+
+
