@@ -43,7 +43,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
    ```bash
    git clone https://github.com/pranav-ambig/YADLTS.git
 
-2. Navigatew:
+2. Navigate:
 
    ```bash
    cd distributed-load-testing
