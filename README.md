@@ -35,6 +35,9 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 
 ## Installation
 
+> [!WARNING]
+> This application involves high utilization of resources and is recommended to run on WSL (Windows Subsystem for Linux).
+
 1. Clone the repository:
 
    ```bash
@@ -62,7 +65,10 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
    cd Distributed_Load_Testing_System
    sudo systemctl start kafka
    python3 orchestrator.py localhost:9092
-   
+   ```
+>[!NOTE]
+>If you **donot** have Apache Kafka installed, follow [this](https://github.com/pranav-ambig/YADLTS/tree/main/Kafka).
+
 ## Features
 ### Driver IDs:
 **Charizard** &emsp;|  &emsp;**Blastoise**  &emsp;|  &emsp;**Venusaur**  &emsp;|  &emsp;**Pikachu**  &emsp;|  &emsp;**Snivy**  &emsp;|  &emsp;**Mewtwo**  &emsp;|  &emsp;**Tentacruel**  &emsp;|  &emsp;**Zapdos**
