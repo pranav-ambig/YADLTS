@@ -1,0 +1,16 @@
+### For Installation Follow These-->
+
+chmod +x *.sh
+dos2unix *.sh
+source kafka.sh
+
+### Usage
+
+# To start Kafka
+sudo systemctl start kafka
+
+# To check the status of Kafka
+sudo systemctl status kafka
+
+# To stop kafka
+sudo systemctl stop kafka
