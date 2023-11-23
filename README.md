@@ -119,6 +119,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 
 ## Contributing
 We welcome contributions! Feel free to open issues for bug reports or feature requests. Pull requests are encouraged
+***If you find this repository useful, kindly consider giving it a star ⭐️***
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
