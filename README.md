@@ -129,3 +129,7 @@ We welcome contributions! Feel free to open issues for bug reports or feature re
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+
+
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
