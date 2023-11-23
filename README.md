@@ -6,10 +6,18 @@
 
 Welcome to the Distributed Load Testing System! This project aims to provide a scalable, high-throughput, and concurrent load testing solution for web servers WITH POKEMONS!. The system is designed to coordinate multiple driver nodes using Kafka as a communication service. It supports two types of load tests: Tsunami testing with configurable delays between requests and Avalanche testing with immediate request dispatch.
 
+### Built With
+
+[![Apache Kafka][Apache Kafka.js]][kafka-url]
+[![React][React.js]][React-url]
+[![JavaScript][Js.js]][Js-url]
+[![Flask][Flask.js]][Flask-url]
+[![Python][Python.js]][Python-url]
+[![Ubuntu][Ubuntu.js]][Ubuntu-url]
+
 ## Table of Contents
 
 - [Architecture](#architecture)
-- [Getting Started](#getting-started)
 - [Installation](#Installation)
 - [Features](#features)
 - [Contributing](#contributing)
@@ -20,18 +28,6 @@ Welcome to the Distributed Load Testing System! This project aims to provide a s
 The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for communication, and a Target HTTP Server for testing. The communication between nodes is facilitated through Kafka topics. The Orchestrator Node exposes a REST API for test control, metrics reporting, and monitoring.
 
 ![Architecture Diagram](https://github.com/Cloud-Computing-Big-Data/RR-Team-11-Distributed-Load-Testing-System/blob/main/Architecture.png)
-
-## Getting Started
-
-### Built With
-
-* [![Apache Kafka][Apache Kafka.js]][kafka-url]
-* [![React][React.js]][React-url]
-* [![JavaScript][Js.js]][Js-url]
-* [![Flask][Flask.js]][Flask-url]
-* [![Python][Python.js]][Python-url]
-* [![Ubuntu][Ubuntu.js]][Ubuntu-url]
-
 
 ## Installation
 
