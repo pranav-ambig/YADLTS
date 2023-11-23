@@ -25,6 +25,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 
 * [![Kafka][Kafka]][[Kafka](https://kafka.apache.org/)]
 * [![React][React.js]][[React-url](https://react.dev/)]
+* [![React][React.js]][React-url]
 
 ## Installation
 
