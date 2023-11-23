@@ -78,48 +78,48 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 * register
 ```bash
 {
-  "node_id": "<POKEMON NAME>",
-  "node_IP": "<NODE IP ADDRESS (with port) HERE>",
-  "message_type": "DRIVER_NODE_REGISTER",
+  "node_id": '<POKEMON NAME>',
+  "node_IP": '<NODE IP ADDRESS (with port) HERE>',
+  "message_type": 'DRIVER_NODE_REGISTER',
 }
 ```
 * test_config
 ```bash
     {
-        "test_id": test_id,
-        "test_type": test_type,
-        "test_message_delay": test_message_delay,
-        "message_count_per_driver": message_count_per_driver
+        "test_id": '<RANDOMLY GENERATED UNQUE TEST ID>',
+        "test_type": '<AVALANCHE|TSUNAMI>',
+        "test_message_delay": '<0 | CUSTOM_DELAY (only applicable in place of Tsunami testing)>',
+        "message_count_per_driver": '<A NUMBER>'
     }
 ```
 * trigger
 ```bash
     {
-        "test_id": test_id,
+        "test_id": '<RANDOMLY GENERATED UNQUE TEST ID>',
         "trigger": "YES"
     }
 ```
 * metrics
 ```bash
     {
-        "node_id": self.node_id,
-        "test_id": self.current_test_config["test_id"],
+        "node_id": '<POKEMON NAME>',
+        "test_id": '<RANDOMLY GENERATED UNQUE TEST ID>',
         "metrics": {
-            "Mean": sum_latency/req_sent,
-            "Median": statistics.median(latency_values),
-            "Mode": statistics.mode(latency_values),
-            "Min": min_latency,
-            "Max": max_latency,
-            "latency": latency,
-            "Requests": req_sent
+            "Mean": '<Mean of Latency>',
+            "Median": '<Median of Latency>',
+            "Mode": '<Mode of Latency>',
+            "Min": '<Minimum Latency>',
+            "Max": '<Maximum Latency>',
+            "latency": '<Latency>',
+            "Requests": '<Number of requests sent>'
         }
     }
 ```
 * heartbeat
 ```bash
   {
-        "node_id": self.node_id,
-        "heartbeat": yesno
+        "node_id": '<POKEMON NAME>',
+        "heartbeat": "<YES/NO>"
   }
 ```
 
