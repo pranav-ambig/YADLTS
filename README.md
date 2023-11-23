@@ -61,7 +61,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 ## Features
 ### Driver IDs:
 ```diff
-- 1. Charizard
+- Charizard
 - 2. Blastoise
 + 3. Venusaur
 + 4. Pikachu
