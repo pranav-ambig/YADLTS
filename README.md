@@ -121,7 +121,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/rahulrao9/Multivariate_timeseries_forecasting.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/pranav-ambig/YADLTS.svg?style=for-the-badge
 [contributors-url]: https://github.com/pranav-ambig/YADLTS/graphs/contributors
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/pranav-ambig/YADLTS/blob/main/MIT-LICENSE.txt
