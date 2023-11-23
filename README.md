@@ -129,4 +129,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 [React-url]: https://reactjs.org/
 
 [Apache Kafka.js]: https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka
-[kafka.url]: https://kafka.apache.org/
+[kafka-url]: https://kafka.apache.org/
