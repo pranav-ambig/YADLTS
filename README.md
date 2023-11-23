@@ -26,7 +26,6 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 * [![React][React.js]][React-url]
 * [![Apache Kafka][Apache Kafka.js]][kafka-url]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 ## Installation
 
 1. Clone the repository:
