@@ -1,3 +1,5 @@
+[![MIT License][license-shield]][license-url]
+[![Contributors][contributors-shield]][contributors-url]
 # Distributed Load Testing System
 
 ## Overview
@@ -123,6 +125,12 @@ We welcome contributions! Feel free to open issues for bug reports or feature re
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-url]: https://github.com/pranav-ambig/YADLTS/graphs/contributors
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/pranav-ambig/YADLTS
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
