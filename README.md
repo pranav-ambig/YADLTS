@@ -30,7 +30,7 @@ Welcome to the Distributed Load Testing System! This project aims to provide a s
 
 The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for communication, and a Target HTTP Server for testing. The communication between nodes is facilitated through Kafka topics. The Orchestrator Node exposes a REST API for test control, metrics reporting, and monitoring.
 
-![Architecture Diagram](https://github.com/Cloud-Computing-Big-Data/RR-Team-11-Distributed-Load-Testing-System/blob/main/Architecture.png)
+![Architecture Diagram](https://github.com/rahulrao9/Distributed-Load-Testing-System/blob/main/Architecture.png)
 
 ## Installation
 
