@@ -1,5 +1,8 @@
 [![MIT License][license-shield]][license-url]
 [![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 # Distributed Load Testing System
 
 ## Overview
@@ -136,6 +139,12 @@ This project is licensed under the [MIT License](https://github.com/pranav-ambig
 [contributors-url]: https://github.com/pranav-ambig/YADLTS/graphs/contributors
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/pranav-ambig/YADLTS/blob/main/MIT-LICENSE.txt
+[forks-shield]: https://img.shields.io/github/forks/pranav-ambig/YADLTS.svg?style=for-the-badge
+[forks-url]: https://github.com/pranav-ambig/YADLTS/forks
+[stars-shield]: https://img.shields.io/github/stars/pranav-ambig/YADLTS.svg?style=for-the-badge
+[stars-url]: https://github.com/pranav-ambig/YADLTSe/stargazers
+[issues-shield]: https://img.shields.io/github/issues/pranav-ambig/YADLTS.svg?style=for-the-badge
+[issues-url]: https://github.com/pranav-ambig/YADLTS/issues
 
 [Apache Kafka.js]: https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka
 [kafka-url]: https://kafka.apache.org/
