@@ -1,24 +1,29 @@
-### For Installation Follow These-->
+## For Installation Follow These-->
 
-(if you donot have java 8)
+>[!NOTE]
+>If you donot have java 8
+```bash
 sudo apt-get update
-
 sudo apt-get install openjdk-8-jdk
-
 java -version
-
-(kafka installation)
+```
+> kafka installation(download kafka.sh)
+```bash
 chmod +x *.sh
 dos2unix *.sh
 source kafka.sh
+```
+## Usage
 
-### Usage
-
-# To start Kafka
+### To start Kafka
+```bash
 sudo systemctl start kafka
-
-# To check the status of Kafka
+```
+### To check the status of Kafka
+```bash
 sudo systemctl status kafka
-
-# To stop kafka
+```
+### To stop kafka
+```bash
 sudo systemctl stop kafka
+```
