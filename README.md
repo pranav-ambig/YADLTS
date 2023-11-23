@@ -60,7 +60,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
    
 ## Features
 ### Driver IDs:
-1. **Charizard** | 2. **Blastoise** | 3. **Venusaur** | 4. **Pikachu** | 5. **Snivy** | 6. **Mewtwo** | 7. **Tentacruel** | 8. **Zapdos**
+1. <span style="color: #FF0000;">**Charizard**</span> | 2. <span style="color: #0000FF;">**Blastoise**</span> | 3. <span style="color: #00FF00;">**Venusaur**</span> | 4. <span style="color: #FFD700;">**Pikachu**</span> | 5. <span style="color: #008000;">**Snivy**</span> | 6. <span style="color: #800080;">**Mewtwo**</span> | 7. <span style="color: #4682B4;">**Tentacruel**</span> | 8. <span style="color: #FFA500;">**Zapdos**</span>
 
 ### Kafka Topics:
 * register
