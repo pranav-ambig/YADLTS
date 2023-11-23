@@ -23,14 +23,8 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![Apache Kafka][Apache Kafka.js]][kafka-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 ## Installation
@@ -133,3 +127,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
+
+[Apache Kafka.js]: https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka
+[kafka.url]: https://kafka.apache.org/
