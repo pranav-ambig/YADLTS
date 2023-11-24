@@ -40,7 +40,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/pranav-ambig/YADLTS.git
+   git clone https://github.com/rahulrao9/Distributed-Load-Testing-System.git
    ```
    
 2. Navigate:
