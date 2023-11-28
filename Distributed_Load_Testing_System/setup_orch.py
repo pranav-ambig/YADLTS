@@ -24,9 +24,6 @@ def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, driv
     heartbeat_thread.start()
     metrics_thread.start()
 
-    # while (not metrics_thread.is_alive()) and (not heartbeat_thread.is_alive()):
-    #     pass
-
     sleep(2)
     trigger_msg = {
         "test_id": test_id,
