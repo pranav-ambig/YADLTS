@@ -107,7 +107,7 @@ def trigger_endpoint():
 
         return jsonify({"status": "success", "message": f"Test finished successfully!: {test_id}"})
     else:
-        return jsonify({"status": "error", "message": "Invalid request parameters"}), 200
+        return jsonify({"status": "error", "message": "Invalid request parameters"}), 400
 
 
 @app.route('/history', methods=['GET'])
