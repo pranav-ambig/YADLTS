@@ -124,6 +124,9 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
         "heartbeat": "<YES/NO>"
   }
 ```
+## Screenshots
+![Image 1](https://github.com/pranav-ambig/YADLTS/blob/main/Screenshots/1.png) | ![Image 2](https://github.com/pranav-ambig/YADLTS/blob/main/Screenshots/2.png)
+:-------------------------:|:-------------------------:
 
 ## Contributing
 We welcome contributions! Feel free to open issues for bug reports or feature requests. Pull requests are encouraged
