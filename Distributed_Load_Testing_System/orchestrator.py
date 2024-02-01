@@ -45,6 +45,7 @@ heartbeats = {}  # contains driver ids: 'YES/NO'
 metrics = {}  # contains driver ids+test id : {metrics}
 tests = []  # list containing all the test ids of tests conducted
 driver_procs = []  # processes that are running the drivers
+msg_count_per_driver = 0
 
 # FLASK
 # SOCKETIO
@@ -72,6 +73,7 @@ def test_config_endpoint():
 
     # num_drivers = 5                             # remove this after testing
     # server_url = 'http://localhost:5052'        # remove this after testing
+    msg_count_per_driver = message_count_per_driver # for metrics calcualtions
 
     driver_procs = setup_drivers(num_drivers, server_url, bootstrap_servers=bootstrapServers)
 
@@ -104,7 +106,7 @@ def trigger_endpoint():
 
     if test_id:
 
-        trigger_thread = threading.Thread(target=setup_orch.trigger_push, args=(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio))
+        trigger_thread = threading.Thread(target=setup_orch.trigger_push, args=(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver))
         trigger_thread.start()
         # print('starting')
 

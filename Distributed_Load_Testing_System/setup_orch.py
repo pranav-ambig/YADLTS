@@ -23,10 +23,10 @@ def to_consumer(producer, topic, message):
 
 # Topics as producer --- trigger, test_config
 
-def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio):
+def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver):
 
     heartbeat_thread = threading.Thread(target=driver_heartbeat, args=(producer, drivers_heartbeat, heartbeats, drivers))
-    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id,))
+    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id, msg_count_per_driver))
 
     heartbeat_thread.start()
     metrics_thread.start()
@@ -77,7 +77,7 @@ def driver_register(driver_reg_consumer, drivers):
             print(f'{data["node_id"]} Registered')
 
 
-def driver_metrics(drivers_metrics, metrics, sio, test_id):
+def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver):
     latencies = []
     min_latency = float('inf')
     max_latency = float('-inf')
@@ -86,7 +86,7 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id):
 
 
     metric_count = 0
-    metric_trigger_threshold = 500 # number of requests after which metrics is sent to frontend
+    metric_trigger_threshold = 0.01 * msg_count_per_driver**2 + 1.5 * msg_count_per_driver + 20 # number of requests after which metrics is sent to frontend
     last_metric_tuple = None
 
     for message in drivers_metrics:
