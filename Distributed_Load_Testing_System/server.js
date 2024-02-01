@@ -13,7 +13,7 @@ let httpserver = http.createServer((req, res)=>{
     }
     console.log(requests_served)
     
-    if (requests_served == 2000){
+    if (requests_served == 5000){
         console.log('Server limit reached, exiting...')
         httpserver.close()
     }

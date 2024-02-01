@@ -8,6 +8,13 @@ from time import sleep
 
 # FUNCTIONALITY
 
+# Socket specific function, sends metrics to frontend
+def transmit_metrics(sio, data, metrics, metric_key, test_id):
+    sio.emit(data["node_id"], {'key': metric_key, 'metrics': metrics[metric_key]})
+    sio.emit('test_metrics', {'key': test_id, 'metrics': metrics[test_id]})
+
+
+# Orchestrator specific funcitons
 # Let's define a function to push the message according to the topics
 def to_consumer(producer, topic, message):
     producer.flush()
@@ -77,12 +84,20 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id):
     mean = 0
     count = 0
 
+
+    metric_count = 0
+    metric_trigger_threshold = 500 # number of requests after which metrics is sent to frontend
+    last_metric_tuple = None
+
     for message in drivers_metrics:
         data = message.value
 
         if 'kill' in data:
+            if last_metric_tuple:
+                transmit_metrics(sio, *last_metric_tuple)
             print("Metrics thread was cancelled.")
             return
+
         try:
             metric_key = str(data["node_id"] + test_id)
             value = data["metrics"]
@@ -109,10 +124,15 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id):
             metric['Requests'] = count  # number of requests sent
 
             metrics[test_id] = metric
-            # Push the metrics through flask for live metrics data
-            sio.emit(data["node_id"], {'key': metric_key, 'metrics': metrics[metric_key]})
-            sio.emit('test_metrics', {'key': test_id, 'metrics': metrics[test_id]})
+            metric_count += 1
+            last_metric_tuple = (data, metrics, metric_key, test_id)
 
+            if metric_count >= metric_trigger_threshold:
+                # Push the metrics through flask for live metrics data
+                transmit_metrics(sio, data, metrics, metric_key, test_id)
+                metric_count = 0
+            else:
+                metric_count += 1
         except json.JSONDecodeError:
             print('Decoder Error')
 

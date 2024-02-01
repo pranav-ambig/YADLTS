@@ -74,6 +74,11 @@ const RealtimeChart = (props) => {
     animation: {
       duration: 0
     },
+    elements : {
+      point : {
+        radius: 0
+      }
+    },
   };
 
 
@@ -185,12 +190,12 @@ const RealtimeChart = (props) => {
             data: [...metric.data, data["metrics"][metric.label]]
           })
         })
-        if (newLabels.length > maxDatapoints){
-          newLabels.shift()
-          newDatasets.forEach(metric=>{
-            metric.data.shift()
-          })
-        }
+        // if (newLabels.length > maxDatapoints){
+        //   newLabels.shift()
+        //   newDatasets.forEach(metric=>{
+        //     metric.data.shift()
+        //   })
+        // }
 
         return {
           labels: newLabels,

@@ -12,6 +12,11 @@ import threading
 from setup_drivers import setup_drivers
 from time import sleep
 import sys
+import logging
+
+# Set logging level
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 bootstrapServers = sys.argv[1]  # taking bootstrap server url from command line
 
