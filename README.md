@@ -46,7 +46,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 2. Navigate:
 
    ```bash
-   cd Distributed-Load-Testing-System
+   cd YADLTS
    ```
    
 3. Install requirements:
