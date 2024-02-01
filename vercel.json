@@ -1,0 +1,3 @@
+{
+    "buildCommand": "./Hosting_config/config.sh"
+}
