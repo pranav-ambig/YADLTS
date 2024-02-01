@@ -13,12 +13,16 @@ from setup_drivers import setup_drivers
 from time import sleep
 import sys
 import logging
+import os
+from dotenv import load_dotenv
 
 # Set logging level
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-bootstrapServers = sys.argv[1]  # taking bootstrap server url from command line
+load_dotenv() 
+
+bootstrapServers = os.environ['BOOTSTRAP_SERVER']  # taking bootstrap server url from .env
 
 # PRODUCER SETTINGS
 producer = KafkaProducer(bootstrap_servers=bootstrapServers)
