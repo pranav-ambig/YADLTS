@@ -66,7 +66,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
    ```bash
    cd Distributed_Load_Testing_System
    sudo systemctl start kafka
-   python3 orchestrator.py localhost:9092
+   python3 orchestrator.py
    ```
 >[!NOTE]
 >If you **donot** have Apache Kafka installed, follow [this](https://github.com/pranav-ambig/YADLTS/blob/main/Kafka/installation.md).
