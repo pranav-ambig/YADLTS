@@ -30,7 +30,7 @@ Welcome to the Distributed Load Testing System! This project aims to provide a s
 
 The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for communication, and a Target HTTP Server for testing. The communication between nodes is facilitated through Kafka topics. The Orchestrator Node exposes a REST API for test control, metrics reporting, and monitoring.
 
-![Architecture Diagram](https://github.com/rahulrao9/Distributed-Load-Testing-System/blob/main/Architecture.png)
+![Architecture Diagram](https://github.com/pranav-ambig/YADLTS/blob/main/Architecture.png)
 
 ## Installation
 
@@ -40,13 +40,13 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/rahulrao9/Distributed-Load-Testing-System.git
+   git clone https://github.com/pranav-ambig/YADLTS.git
    ```
    
 2. Navigate:
 
    ```bash
-   cd Distributed-Load-Testing-System
+   cd YADLTS
    ```
    
 3. Install requirements:
@@ -66,7 +66,7 @@ The system consists of an Orchestrator Node, Driver Nodes, a Kafka broker for co
    ```bash
    cd Distributed_Load_Testing_System
    sudo systemctl start kafka
-   python3 orchestrator.py localhost:9092
+   python3 orchestrator.py
    ```
 >[!NOTE]
 >If you **donot** have Apache Kafka installed, follow [this](https://github.com/pranav-ambig/YADLTS/blob/main/Kafka/installation.md).
