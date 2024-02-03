@@ -15,7 +15,7 @@ const DashBoard = (props) => {
 
   useEffect(()=>{
     // setInterval(()=>{
-      axios.get('http://localhost:5000/driver_ids')
+      axios.get('https://distributed-load-tester.onrender.com/driver_ids')
       .then((res)=>{
         if (availableDrivers == 0 && res["data"]["driver_ids"].length > 0){
           // console.log(availableDrivers, res["data"]["driver_ids"].length)
