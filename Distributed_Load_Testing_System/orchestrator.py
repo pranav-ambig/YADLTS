@@ -173,6 +173,6 @@ if __name__ == "__main__":
     # Running the driver register function indefinitely to service all the registers with an isolated thread
 
     # Start Flask-SocketIO app
-    socketio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True) #http://127.0.0.1:5000
+    sio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True) #http://127.0.0.1:5000
     # make this port dynamic to accomodate multiple users and implement load balancer
 
