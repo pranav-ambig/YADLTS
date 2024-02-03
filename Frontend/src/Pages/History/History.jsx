@@ -21,7 +21,7 @@ const History = ()=>{
     }, [TestIds])
 
     useEffect(()=>{
-        axios.get("http://localhost:5000/history")
+        axios.get("https://distributed-load-tester.onrender.com/history")
         .then((res)=>{
             // console.log(res.data.history)
             setHistory(res.data.history)
