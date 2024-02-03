@@ -9,7 +9,7 @@ const SideBar = () => {
     
   useEffect(()=>{
     setInterval(()=>{
-      axios.get('http://localhost:5000/driver_ids')
+      axios.get('http://127.0.0.1:5000/driver_ids')
       .then((res)=>{
         if (availableDrivers == 0 && res["data"]["driver_ids"].length > 0){
           setAvailabeDrivers(res["data"]["driver_ids"].length)
