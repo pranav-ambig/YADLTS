@@ -23,4 +23,6 @@ RUN dos2unix /app/*.sh
 
 RUN chmod +x /app/*.sh
 
+EXPOSE 5000
+
 CMD ["/bin/bash", "-c", "./config.sh"]
