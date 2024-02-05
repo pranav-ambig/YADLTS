@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import History from './Pages/History/History'
 import { useState } from 'react'
 
-export const BACKEND_URL = import.meta.env.BACKEND_URL
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 console.log('test', BACKEND_URL)
 
 const socket = io(BACKEND_URL, {
