@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Create.css'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from '../../App';
 
 const Create = (props)=>{
 
@@ -30,12 +31,11 @@ const Create = (props)=>{
                 "message_count_per_driver": Number(throughput),
                 "num_drivers": Number(numDrivers),
                 "server_url": server_url.value
-                //   "server_url": "http://localhost:5052"
             }
         )
         
         document.body.style.cursor = 'wait'
-        axios.post('http://localhost:5000/test_config', 
+        axios.post(BACKEND_URL+'/test_config', 
             {
             "test_type": test_type.options[test_type.selectedIndex].text,
             "test_message_delay": Number(delay),
@@ -53,7 +53,7 @@ const Create = (props)=>{
     }
 
     const trigger = ()=>{
-        axios.post('http://localhost:5000/trigger', 
+        axios.post(BACKEND_URL+'/trigger', 
           {
             "test_id": testID
           }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import axios from "axios"
 import RealtimeMetricBox from '../../Components/RealtimeMetricBox/RealtimeMetricBox';
 import RealtimeMetricBoxMini from '../../Components/RealtimeMetricBoxMini/RealtimeMetricBoxMini'
+import { BACKEND_URL } from '../../App';
 
 const DashBoard = (props) => {
 
@@ -15,7 +16,7 @@ const DashBoard = (props) => {
 
   useEffect(()=>{
     // setInterval(()=>{
-      axios.get('https://distributed-load-tester.onrender.com/driver_ids')
+      axios.get(BACKEND_URL+'/driver_ids')
       .then((res)=>{
         if (availableDrivers == 0 && res["data"]["driver_ids"].length > 0){
           // console.log(availableDrivers, res["data"]["driver_ids"].length)

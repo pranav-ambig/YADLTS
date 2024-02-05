@@ -9,7 +9,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import History from './Pages/History/History'
 import { useState } from 'react'
 
-const socket = io('https://distributed-load-tester.onrender.com', {
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+console.log('test', BACKEND_URL)
+
+const socket = io(BACKEND_URL, {
     withCredentials: true,
     extraHeaders: {
       'Access-Control-Allow-Origin': 'http://localhost:5173',

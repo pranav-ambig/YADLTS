@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import './SideBarStyle.css'
 import axios from "axios"
+import { BACKEND_URL } from '../../App';
+
 
 const SideBar = () => {
 
@@ -9,7 +11,7 @@ const SideBar = () => {
     
   useEffect(()=>{
     setInterval(()=>{
-      axios.get('https://distributed-load-tester.onrender.com/driver_ids')
+      axios.get(BACKEND_URL+'/driver_ids')
       .then((res)=>{
         if (availableDrivers == 0 && res["data"]["driver_ids"].length > 0){
           setAvailabeDrivers(res["data"]["driver_ids"].length)

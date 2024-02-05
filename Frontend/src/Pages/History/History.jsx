@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './History.css'
 import axios from 'axios';
 import MetricBox from '../../Components/MetricBox/MetricBox';
+import { BACKEND_URL } from '../../App';
 
 
 
@@ -21,7 +22,7 @@ const History = ()=>{
     }, [TestIds])
 
     useEffect(()=>{
-        axios.get("https://distributed-load-tester.onrender.com/history")
+        axios.get(BACKEND_URL+'/history')
         .then((res)=>{
             // console.log(res.data.history)
             setHistory(res.data.history)

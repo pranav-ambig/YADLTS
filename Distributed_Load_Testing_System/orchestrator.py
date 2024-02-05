@@ -50,7 +50,7 @@ msg_count_per_driver = 0
 # FLASK
 # SOCKETIO
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*", "supports_credentials": True}})
+CORS(app, resources={r"/*": {"origins": "*", "supports_credentials": True}}) # replace * with frontend url
 sio = SocketIO(app, cors_allowed_origins="*")
 
 # REST API Endpoints
