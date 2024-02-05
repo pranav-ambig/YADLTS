@@ -23,10 +23,11 @@
 
 .DashBoard > h3 {
     font-size: var(--fs-h3);
+    align-self: baseline;
 }
 
 .dash-spacer {
-    height: 5rem;
+    height: 2rem;
     width: 100%;
 }
 

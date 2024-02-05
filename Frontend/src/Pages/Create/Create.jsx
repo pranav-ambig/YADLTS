@@ -3,7 +3,7 @@ import './Create.css'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 
-const Create = ()=>{
+const Create = (props)=>{
 
     const [DelThrSwitchLabel, setDelThrSwitchLabel] = useState(<h2>Throughput</h2>);
     const [DelThrSwitchInp, setDelThrSwitchInp] = useState(<input type='number' min={0} id='throughput'></input>);
@@ -11,7 +11,7 @@ const Create = ()=>{
 
     const navigate = useNavigate();
     
-    const [TestID, setTestID] = useState("");
+    let {testID, setTestID} = props
 
     const sendTestData = ()=>{
         let server_url = document.getElementById('server-url')
@@ -55,7 +55,7 @@ const Create = ()=>{
     const trigger = ()=>{
         axios.post('http://localhost:5000/trigger', 
           {
-            "test_id": TestID
+            "test_id": testID
           }
         ).then((res)=>{console.log(res)})
         navigate('/view')

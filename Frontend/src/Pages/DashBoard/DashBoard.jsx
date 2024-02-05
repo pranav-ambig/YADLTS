@@ -7,7 +7,7 @@ import RealtimeMetricBoxMini from '../../Components/RealtimeMetricBoxMini/Realti
 
 const DashBoard = (props) => {
 
-  const [testId, setTestId] = useState("--");
+  const {testID, setTestID} = props
   const [availableDrivers, setAvailabeDrivers] = useState(0);
   const [TestStatus, setTestStatus] = useState("Idle");
 
@@ -40,6 +40,7 @@ const DashBoard = (props) => {
         else if (res["data"]["driver_ids"].length == 0) {
           setAvailabeDrivers(0)
           setMiniCharts(<></>)
+          setTestID('--')
         }
       })
       .catch(()=>{})
@@ -48,8 +49,8 @@ const DashBoard = (props) => {
   
   return (
     <div className="DashBoard">
-      
       <div className='dash-spacer'></div>
+      <h3>Test ID: {testID}</h3>
       <div className="MainChartMetrics">
         <div className="MainChart">
           {/* <h2>Status: {TestStatus}</h2> */}
