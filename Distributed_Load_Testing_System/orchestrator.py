@@ -15,6 +15,7 @@ import sys
 import logging
 import os
 from dotenv import load_dotenv
+import site_inspector
 
 # Set logging level
 log = logging.getLogger('werkzeug')
@@ -68,34 +69,36 @@ def test_config_endpoint():
     test_type = data.get('test_type')
     test_message_delay = data.get('test_message_delay')
     message_count_per_driver = data.get('message_count_per_driver')
-    num_drivers = data.get('num_drivers')  # uncomment this while launching
-    server_url = data.get('server_url')  # uncomment this while launching
+    num_drivers = data.get('num_drivers')
+    server_url = data.get('server_url')
 
-    # num_drivers = 5                             # remove this after testing
-    # server_url = 'http://localhost:5052'        # remove this after testing
-    msg_count_per_driver = message_count_per_driver # for metrics calcualtions
+    if site_inspector.inspect(server_url): #check for robots.txt
+        msg_count_per_driver = message_count_per_driver # for metrics calcualtions
 
-    driver_procs = setup_drivers(num_drivers, server_url, bootstrap_servers=bootstrapServers)
+        driver_procs = setup_drivers(num_drivers, server_url, bootstrap_servers=bootstrapServers)
 
-    while len(driver_procs) > len(drivers):  # make sure thy are synced up
-        sleep(1)
+        while len(driver_procs) > len(drivers):  # make sure thy are synced up
+            sleep(1)
 
-    if test_type in ["AVALANCHE", "TSUNAMI"] and test_message_delay >= 0:  # as per project requirement
+        if test_type in ["AVALANCHE", "TSUNAMI"] and test_message_delay >= 0:  # as per project requirement
 
-        test_id = str(uuid.uuid4())  # Generate a unique test_id
-        tests.append(test_id)
-        setup_orch.test_config_push(producer, test_type, test_message_delay, test_id, message_count_per_driver)
+            test_id = str(uuid.uuid4())  # Generate a unique test_id
+            tests.append(test_id)
+            setup_orch.test_config_push(producer, test_type, test_message_delay, test_id, message_count_per_driver)
 
-        response_data = {
-            "status": "success",
-            "message": "Test configuration pushed successfully",
-            "test_id": test_id  # send back the generated test id
-        }
-        return jsonify(response_data)
+            response_data = {
+                "status": "success",
+                "message": "Test configuration pushed successfully",
+                "test_id": test_id  # send back the generated test id
+            }
+            return jsonify(response_data)
 
+        else:
+
+            return jsonify({"status": "error", "message": "Invalid request parameters"}), 400
+    
     else:
-
-        return jsonify({"status": "error", "message": "Invalid request parameters"}), 400
+        return jsonify({"status": "error", "message": "This URL doesnot allow testing!"}), 400
 
 
 @app.route('/trigger', methods=['POST'])
