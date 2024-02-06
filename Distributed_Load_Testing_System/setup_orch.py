@@ -5,6 +5,7 @@ import json
 import threading
 import statistics
 from time import sleep
+import psutil
 
 # FUNCTIONALITY
 
@@ -26,7 +27,7 @@ def to_consumer(producer, topic, message):
 def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver):
 
     heartbeat_thread = threading.Thread(target=driver_heartbeat, args=(producer, drivers_heartbeat, heartbeats, drivers))
-    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id, msg_count_per_driver))
+    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer))
 
     heartbeat_thread.start()
     metrics_thread.start()
@@ -67,6 +68,25 @@ def test_config_push(producer, test_type, test_message_delay, test_id, message_c
     to_consumer(producer, "test_config", config_msg)
 
 
+def kill_driver_processes(producer, test_id):
+    trigger_msg = {
+        'test_id': test_id,
+        'trigger': 'NO'
+    }
+    to_consumer(producer, "trigger", trigger_msg)
+
+
+def timer_thread(producer, stop_timer_event, test_id):
+    while not stop_timer_event.is_set():
+        sleep(1) 
+    kill_driver_processes(producer, test_id)
+
+def request_limit(producer,test_id, no_of_req):
+    if no_of_req >= 500:
+        kill_driver_processes(producer, test_id)
+    else:
+        pass
+
 # Topics as consumer --- register, metrics, heartbeat
 def driver_register(driver_reg_consumer, drivers):
     reg_msg = "DRIVER_NODE_REGISTER"
@@ -77,7 +97,7 @@ def driver_register(driver_reg_consumer, drivers):
             print(f'{data["node_id"]} Registered')
 
 
-def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver):
+def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer):
     latencies = []
     min_latency = float('inf')
     max_latency = float('-inf')
@@ -97,6 +117,8 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver)
                 transmit_metrics(sio, *last_metric_tuple)
             print("Metrics thread was cancelled.")
             return
+        
+        request_limit(producer, test_id, count)
 
         try:
             metric_key = str(data["node_id"] + test_id)

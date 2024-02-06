@@ -12,7 +12,7 @@ def get_robots_txt(root_url):
     if response.status_code == 200:
         return response.text
     else:
-        return None
+        return False
 
 def parse_robots_txt(robots_txt_content, root_url,user_agent='*'):
     lines = robots_txt_content.split('\n')

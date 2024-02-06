@@ -47,6 +47,8 @@ metrics = {}  # contains driver ids+test id : {metrics}
 tests = []  # list containing all the test ids of tests conducted
 driver_procs = []  # processes that are running the drivers
 msg_count_per_driver = 0
+timer_thread_instance = None # Global variable to track the timer thread
+stop_timer_event = threading.Event() # Event to signal the timer thread to stop
 
 # FLASK
 # SOCKETIO
@@ -99,6 +101,32 @@ def test_config_endpoint():
     
     else:
         return jsonify({"status": "error", "message": "This URL doesnot allow testing!"}), 400
+
+
+@app.route('/timeout', methods=['post'])
+def user_timeout():
+    data = request.get_json()
+    test_id = data.get('test_id')
+    active = data.get('active')
+
+    global timer_thread_instance
+
+    if active == "NO":
+
+        if not timer_thread_instance or not timer_thread_instance.is_alive():
+            timer_thread_instance = threading.Thread(target=setup_orch.timer_thread, args=(producer, stop_timer_event, test_id))
+            timer_thread_instance.start()
+            print("Timer started.")
+        
+    elif active == "YES":
+
+        if timer_thread_instance and timer_thread_instance.is_alive():
+            stop_timer_event.set()
+            timer_thread_instance.join()
+            stop_timer_event.clear()
+            print("Timer stopped.")
+
+    return jsonify({"status": "termination", "message": "Inavctivity detected!"})
 
 
 @app.route('/trigger', methods=['POST'])
