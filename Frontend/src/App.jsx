@@ -26,8 +26,12 @@ function App() {
 
   const handleVisibilityChange = ()=>{
 
+    if (testID === '--') {
+      return
+    }
+
     if (document.visibilityState === 'hidden'){
-      
+      console.log('aksjfkdfk')
       axios.post(BACKEND_URL+'/timeout', {
         test_id: testID,
         active: "NO"
@@ -48,7 +52,7 @@ function App() {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
 
-  }, [])
+  }, [testID])
 
   return (
     <div className='App'>
