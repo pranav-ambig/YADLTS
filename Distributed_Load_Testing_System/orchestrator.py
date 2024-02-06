@@ -47,6 +47,8 @@ metrics = {}  # contains driver ids+test id : {metrics}
 tests = []  # list containing all the test ids of tests conducted
 driver_procs = []  # processes that are running the drivers
 msg_count_per_driver = 0
+timer_thread_instance = None # Global variable to track the timer thread
+stop_timer_event = threading.Event() # Event to signal the timer thread to stop
 
 # FLASK
 # SOCKETIO
@@ -101,6 +103,36 @@ def test_config_endpoint():
         return jsonify({"status": "error", "message": "This URL doesnot allow testing!"}), 400
 
 
+@app.route('/timeout', methods=['post'])
+def user_timeout():
+    data = request.get_json()
+    active = data.get('active')
+
+    global driver_procs
+    global timer_thread_instance
+
+    if active == "NO":
+
+        if not timer_thread_instance or not timer_thread_instance.is_alive():
+            timer_thread_instance = threading.Thread(target=setup_orch.timer_thread, args=(stop_timer_event, driver_procs))
+            timer_thread_instance.start()
+            print("Timer started.")
+        
+        # Assuming you have a list of driver processes, update driver_procs accordingly
+        # For example:
+        # driver_procs = [psutil.Process(pid) for pid in get_driver_process_pids()]
+
+    elif active == "YES":
+
+        if timer_thread_instance and timer_thread_instance.is_alive():
+            stop_timer_event.set()  # Signal the timer thread to stop
+            timer_thread_instance.join()  # Wait for the thread to finish
+            stop_timer_event.clear()  # Reset the event
+            print("Timer stopped.")
+
+    return jsonify({"status": "termination", "message": "This test has been terminated due to inavctivity!"})
+
+
 @app.route('/trigger', methods=['POST'])
 def trigger_endpoint():
     # request json should contain --> {"test_id"}
@@ -109,7 +141,7 @@ def trigger_endpoint():
 
     if test_id:
 
-        trigger_thread = threading.Thread(target=setup_orch.trigger_push, args=(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver))
+        trigger_thread = threading.Thread(target=setup_orch.trigger_push, args=(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver, driver_procs))
         trigger_thread.start()
         # print('starting')
 
