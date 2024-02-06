@@ -31,7 +31,6 @@ function App() {
     }
 
     if (document.visibilityState === 'hidden'){
-      console.log('aksjfkdfk')
       axios.post(BACKEND_URL+'/timeout', {
         test_id: testID,
         active: "NO"
