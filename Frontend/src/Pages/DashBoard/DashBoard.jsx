@@ -28,7 +28,7 @@ const DashBoard = (props) => {
                 return(
                 <div key={i} className='ChartBlock'>
                   <div className="img-ctn">
-                    <img src={`src\\assets\\${pokemon}.gif`}></img>
+                    <img src={`\\public\\${pokemon}.gif`}></img>
                   </div>
                   <RealtimeMetricBoxMini name={pokemon} miniMode={true}></RealtimeMetricBoxMini>
                   <RealtimeChart color='#EC8F5E' name={pokemon}></RealtimeChart>
