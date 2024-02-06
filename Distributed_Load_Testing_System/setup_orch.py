@@ -77,9 +77,17 @@ def kill_driver_processes(producer, test_id):
 
 
 def timer_thread(producer, stop_timer_event, test_id):
-    while not stop_timer_event.is_set():
-        sleep(1) 
-    kill_driver_processes(producer, test_id)
+    max_wait_time = 30
+    elapsed_time = 0
+
+    while elapsed_time < max_wait_time and not stop_timer_event.is_set():
+        sleep(1)
+        elapsed_time += 1
+        print(f'elapsed time: {elapsed_time}s')
+
+    if not stop_timer_event.is_set():
+        kill_driver_processes(producer, test_id)
+
 
 def request_limit(producer,test_id, no_of_req):
     if no_of_req >= 500:
