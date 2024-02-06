@@ -71,7 +71,7 @@ def test_config_push(producer, test_type, test_message_delay, test_id, message_c
 def kill_driver_processes(driver_procs):
     for process in driver_procs:
         try:
-            pid = process.info['pid']
+            pid = process.pid
             process = psutil.Process(pid)
             process.terminate()
             print(f"Driver process with PID {pid} terminated.")
