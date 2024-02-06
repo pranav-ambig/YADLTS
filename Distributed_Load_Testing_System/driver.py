@@ -60,6 +60,7 @@ class Driver():
 
     def trigger(self):
         self.info('Starting trigger thread')
+        bombardThread = None
         for message in self.consumer_trigger:
             message = message.value.decode('utf-8')
             try:
@@ -71,7 +72,13 @@ class Driver():
                 # return
             if data["trigger"] == "YES":
                 # start bombarding
-                self.bombard()
+                bombardThread = Thread(target=self.bombard)
+                bombardThread.start()
+            elif data["trigger"] == "NO":
+                self.test_active.clear()
+                break
+        if bombardThread:
+            bombardThread.join()
     
     def bombard(self):
         
