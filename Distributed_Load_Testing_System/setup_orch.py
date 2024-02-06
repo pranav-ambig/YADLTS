@@ -24,10 +24,10 @@ def to_consumer(producer, topic, message):
 
 # Topics as producer --- trigger, test_config
 
-def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver, driver_procs):
+def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver):
 
     heartbeat_thread = threading.Thread(target=driver_heartbeat, args=(producer, drivers_heartbeat, heartbeats, drivers))
-    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, driver_procs))
+    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer))
 
     heartbeat_thread.start()
     metrics_thread.start()
@@ -68,25 +68,22 @@ def test_config_push(producer, test_type, test_message_delay, test_id, message_c
     to_consumer(producer, "test_config", config_msg)
 
 
-def kill_driver_processes(driver_procs):
-    for process in driver_procs:
-        try:
-            pid = process.info['pid']
-            process = psutil.Process(pid)
-            process.terminate()
-            print(f"Driver process with PID {pid} terminated.")
-        except (psutil.NoSuchProcess, psutil.AccessDenied) as e:
-            print(f"Error terminating driver process: {e}")
+def kill_driver_processes(producer, test_id):
+    trigger_msg = {
+        'test_id': test_id,
+        'trigger': 'NO'
+    }
+    to_consumer(producer, "trigger", trigger_msg)
 
-# Function to be executed by the timer thread
-def timer_thread(stop_timer_event, driver_procs):
+
+def timer_thread(producer, stop_timer_event, test_id):
     while not stop_timer_event.is_set():
-        sleep(1)  # Sleep for 1 second and check if the event is set
-    kill_driver_processes(driver_procs)
+        sleep(1) 
+    kill_driver_processes(producer, test_id)
 
-def request_limit(driver_procs, no_of_req):
+def request_limit(producer,test_id, no_of_req):
     if no_of_req >= 500:
-        kill_driver_processes(driver_procs)
+        kill_driver_processes(producer, test_id)
     else:
         pass
 
@@ -100,7 +97,7 @@ def driver_register(driver_reg_consumer, drivers):
             print(f'{data["node_id"]} Registered')
 
 
-def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, driver_procs):
+def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer):
     latencies = []
     min_latency = float('inf')
     max_latency = float('-inf')
@@ -121,7 +118,7 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver,
             print("Metrics thread was cancelled.")
             return
         
-        request_limit(driver_procs, count)
+        request_limit(producer, test_id, count)
 
         try:
             metric_key = str(data["node_id"] + test_id)
