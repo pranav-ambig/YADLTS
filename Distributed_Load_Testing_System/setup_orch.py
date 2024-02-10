@@ -6,13 +6,6 @@ import threading
 import statistics
 from time import sleep
 import psutil
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-MAX_REQUESTS = os.environ['MAX_REQUESTS']
-MAX_REQUESTS = int(MAX_REQUESTS)
 
 # FUNCTIONALITY
 
