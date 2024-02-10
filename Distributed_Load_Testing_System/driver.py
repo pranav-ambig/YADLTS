@@ -72,10 +72,14 @@ class Driver():
                 # return
             if data["trigger"] == "YES":
                 # start bombarding
+                self.test_active.set()
                 bombardThread = Thread(target=self.bombard)
                 bombardThread.start()
             elif data["trigger"] == "NO":
-                self.test_active.clear()
+                self.stop_test()
+                self.send_heartbeat("NO")
+                print('heartbeat NO sent')
+                #self.server_url = 'https://www.google.com/error'
                 break
         if bombardThread:
             bombardThread.join()
@@ -95,7 +99,6 @@ class Driver():
         def send_req():
             nonlocal req_sent, min_latency, max_latency, sum_latency
             try:
-                # print(f'{cpu_percent(1)}%')
                 start_time = perf_counter()
                 response = requests.get(self.server_url)
                 end_time = perf_counter()
@@ -121,24 +124,20 @@ class Driver():
                         "Requests": req_sent
                     }
                 }
-                # print(metrics_data)
                 self.producer.send("metrics", value=json.dumps(metrics_data).encode("utf-8"))
-                # latency_values.append(latency)
-
 
             except requests.exceptions.ConnectionError:
-                self.test_active.clear()
+                self.stop_test(self)
                 return
         
         if self.current_test_config["test_type"] == "TSUNAMI":
-            # print('executing tsunami')
-            while True:
+            while self.test_active.is_set():
                 send_req()
                 sleep(self.current_test_config["test_message_delay"])
-                if not self.test_active.is_set(): 
-                    self.info("Server crashed")
-                    self.send_heartbeat("NO")
-                    return
+
+            self.info("Server crashed")
+            self.send_heartbeat("NO")
+            return
         else:
             with ThreadPoolExecutor(max_workers=int(self.current_test_config["message_count_per_driver"])) as executor:
                 while True:
@@ -178,10 +177,9 @@ class Driver():
             "message_type": "DRIVER_NODE_REGISTER",
             }
         self.producer.send('register', json.dumps(register_dict).encode())
-        self.producer.flush()
-        # producer.close()
 
         self.info('Register message sent')
     
-    
+    def stop_test(self):
+        self.test_active.clear()
     

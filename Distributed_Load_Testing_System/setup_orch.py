@@ -6,6 +6,13 @@ import threading
 import statistics
 from time import sleep
 import psutil
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+MAX_REQUESTS = os.environ['MAX_REQUESTS']
+MAX_REQUESTS = int(MAX_REQUESTS)
 
 # FUNCTIONALITY
 
@@ -18,16 +25,15 @@ def transmit_metrics(sio, data, metrics, metric_key, test_id):
 # Orchestrator specific funcitons
 # Let's define a function to push the message according to the topics
 def to_consumer(producer, topic, message):
-    producer.flush()
+ #   producer.flush()
     producer.send(topic, value=json.dumps(message).encode('utf-8'))
-
 
 # Topics as producer --- trigger, test_config
 
-def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver):
+def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver, request_limit_event, max_req):
 
     heartbeat_thread = threading.Thread(target=driver_heartbeat, args=(producer, drivers_heartbeat, heartbeats, drivers))
-    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer))
+    metrics_thread = threading.Thread(target=driver_metrics, args=(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer, request_limit_event, max_req))
 
     heartbeat_thread.start()
     metrics_thread.start()
@@ -44,17 +50,16 @@ def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, driv
 
     heartbeat_thread.join()
     metrics_thread.join()
-
-    
-
-    print(f"FINAL METRICS of test ID ({test_id}):\n"
-          f"Mean Latency --> {metrics[test_id]['Mean']} s\n"
-          f"Median Latency --> {metrics[test_id]['Median']} s\n"
-          f"Mode Latency --> {metrics[test_id]['Mode']} s\n"
-          f"Minimum Latency --> {metrics[test_id]['Min']} s\n"
-          f"Maximum Latency --> {metrics[test_id]['Max']} s\n"
-          f"Number of requests sent --> {metrics[test_id]['Requests']}")
-
+    try:
+        print(f"FINAL METRICS of test ID ({test_id}):\n"
+            f"Mean Latency --> {metrics[test_id]['Mean']} s\n"
+            f"Median Latency --> {metrics[test_id]['Median']} s\n"
+            f"Mode Latency --> {metrics[test_id]['Mode']} s\n"
+            f"Minimum Latency --> {metrics[test_id]['Min']} s\n"
+            f"Maximum Latency --> {metrics[test_id]['Max']} s\n"
+            f"Number of requests sent --> {metrics[test_id]['Requests']}")
+    except KeyError:
+        print(f"Error: Test ID {test_id} not found in metrics dictionary.")
     return
 
 
@@ -68,33 +73,6 @@ def test_config_push(producer, test_type, test_message_delay, test_id, message_c
     to_consumer(producer, "test_config", config_msg)
 
 
-def kill_driver_processes(producer, test_id):
-    trigger_msg = {
-        'test_id': test_id,
-        'trigger': 'NO'
-    }
-    to_consumer(producer, "trigger", trigger_msg)
-
-
-def timer_thread(producer, stop_timer_event, test_id):
-    max_wait_time = 30
-    elapsed_time = 0
-
-    while elapsed_time < max_wait_time and not stop_timer_event.is_set():
-        sleep(1)
-        elapsed_time += 1
-        print(f'elapsed time: {elapsed_time}s')
-
-    if not stop_timer_event.is_set():
-        kill_driver_processes(producer, test_id)
-
-
-def request_limit(producer,test_id, no_of_req):
-    if no_of_req >= 500:
-        kill_driver_processes(producer, test_id)
-    else:
-        pass
-
 # Topics as consumer --- register, metrics, heartbeat
 def driver_register(driver_reg_consumer, drivers):
     reg_msg = "DRIVER_NODE_REGISTER"
@@ -105,7 +83,7 @@ def driver_register(driver_reg_consumer, drivers):
             print(f'{data["node_id"]} Registered')
 
 
-def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer):
+def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver, producer, request_limit_event, max_req):
     latencies = []
     min_latency = float('inf')
     max_latency = float('-inf')
@@ -117,6 +95,8 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver,
     metric_trigger_threshold = 0.01 * msg_count_per_driver**2 + 1.5 * msg_count_per_driver + 20 # number of requests after which metrics is sent to frontend
     last_metric_tuple = None
 
+    exit = False
+
     for message in drivers_metrics:
         data = message.value
 
@@ -125,8 +105,6 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver,
                 transmit_metrics(sio, *last_metric_tuple)
             print("Metrics thread was cancelled.")
             return
-        
-        request_limit(producer, test_id, count)
 
         try:
             metric_key = str(data["node_id"] + test_id)
@@ -163,6 +141,12 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver,
                 metric_count = 0
             else:
                 metric_count += 1
+
+            if count >= max_req and not exit:
+                request_limit_event.set()
+                request_limit(producer, test_id, request_limit_event)
+                request_limit_event.clear()
+                exit = True
         except json.JSONDecodeError:
             print('Decoder Error')
 
@@ -181,3 +165,30 @@ def driver_heartbeat(producer, drivers_heartbeat, heartbeats, drivers):
             drivers.clear()
             heartbeats.clear()
             return
+
+
+def kill_driver_processes(producer, test_id):
+    trigger_msg = {
+        'test_id': test_id,
+        'trigger': 'NO'
+    }
+    to_consumer(producer, "trigger", trigger_msg)
+
+
+def timer_thread(producer, stop_timer_event, test_id):
+    max_wait_time = 20
+    elapsed_time = 0
+
+    while elapsed_time < max_wait_time and not stop_timer_event.is_set():
+        sleep(1)
+        elapsed_time += 1
+
+    if not stop_timer_event.is_set():
+        print(f'elapsed time: {elapsed_time}s')
+        kill_driver_processes(producer, test_id)
+
+
+def request_limit(producer,test_id, request_limit_event):
+    if request_limit_event.is_set():
+        print("REQUEST LIMIT REACHED!!")
+        kill_driver_processes(producer, test_id)

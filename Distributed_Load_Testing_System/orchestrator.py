@@ -23,14 +23,16 @@ log.setLevel(logging.ERROR)
 
 load_dotenv() 
 
-bootstrapServers = os.environ['BOOTSTRAP_SERVER']  # taking bootstrap server url from .env
+BOOTSTRAP_SERVER = os.environ['BOOTSTRAP_SERVER']  # taking bootstrap server url from .env
+MAX_REQUESTS = os.environ['MAX_REQUESTS']
+MAX_REQUESTS = int(MAX_REQUESTS)
 
 # PRODUCER SETTINGS
-producer = KafkaProducer(bootstrap_servers=bootstrapServers)
+producer = KafkaProducer(bootstrap_servers=BOOTSTRAP_SERVER)
 
 # CONSUMER SETTINGS
 consumer_settings = {
-    'bootstrap_servers': bootstrapServers,  # Address of the Kafka broker(s)
+    'bootstrap_servers': BOOTSTRAP_SERVER,  # Address of the Kafka broker(s)
     'auto_offset_reset': 'latest',  # Start consuming from the earliest available offset
     'value_deserializer': lambda x: json.loads(x.decode('utf-8'))  # JSON deserializer for message values
 }
@@ -49,6 +51,9 @@ driver_procs = []  # processes that are running the drivers
 msg_count_per_driver = 0
 timer_thread_instance = None # Global variable to track the timer thread
 stop_timer_event = threading.Event() # Event to signal the timer thread to stop
+request_limit_event = threading.Event() # Send kill message when req limit reached
+#test_active= threading.Event()
+
 
 # FLASK
 # SOCKETIO
@@ -77,7 +82,7 @@ def test_config_endpoint():
     if site_inspector.inspect(server_url): #check for robots.txt
         msg_count_per_driver = message_count_per_driver # for metrics calcualtions
 
-        driver_procs = setup_drivers(num_drivers, server_url, bootstrap_servers=bootstrapServers)
+        driver_procs = setup_drivers(num_drivers, server_url, bootstrap_servers=BOOTSTRAP_SERVER)
 
         while len(driver_procs) > len(drivers):  # make sure thy are synced up
             sleep(1)
@@ -102,7 +107,7 @@ def test_config_endpoint():
     else:
         return jsonify({"status": "error", "message": "This URL doesnot allow testing!"}), 400
 
-
+'''
 @app.route('/timeout', methods=['post'])
 def user_timeout():
     data = request.get_json()
@@ -111,7 +116,7 @@ def user_timeout():
 
     global timer_thread_instance
 
-    if active == "NO":
+    if active == "NO" and test_active.is_set:
 
         if not timer_thread_instance or not timer_thread_instance.is_alive():
             timer_thread_instance = threading.Thread(target=setup_orch.timer_thread, args=(producer, stop_timer_event, test_id))
@@ -127,7 +132,7 @@ def user_timeout():
             print("Timer stopped.")
 
     return jsonify({"status": "termination", "message": "Inavctivity detected!"})
-
+'''
 
 @app.route('/trigger', methods=['POST'])
 def trigger_endpoint():
@@ -136,17 +141,16 @@ def trigger_endpoint():
     test_id = data.get('test_id')
 
     if test_id:
-
-        trigger_thread = threading.Thread(target=setup_orch.trigger_push, args=(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver))
+        trigger_thread = threading.Thread(target=setup_orch.trigger_push, args=(producer, metrics, test_id, drivers_heartbeat, heartbeats, drivers, drivers_metrics, sio, msg_count_per_driver, request_limit_event, MAX_REQUESTS))
         trigger_thread.start()
-        # print('starting')
+#        test_active.set()
 
         while len(drivers) > 0:  # make sure the test is ended
             pass
 
         for driver_processes in driver_procs:
             driver_processes.terminate()  # killing all the drivers after test end
-
+#        test_active.clear()
         return jsonify({"status": "success", "message": f"Test finished successfully!: {test_id}"})
     else:
         return jsonify({"status": "error", "message": "Invalid request parameters"}), 400
@@ -156,7 +160,6 @@ def trigger_endpoint():
 def history_endpoint():
     # send metrics history to frontend
     history = {}
-    # print(metrics)
     # return jsonify({"history": {}})
     """
         history structure -->  
