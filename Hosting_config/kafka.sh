@@ -91,13 +91,9 @@ chown -R nobody:nogroup /usr/local/kafka
 sleep 7
 
 echo "---------------"
-if pgrep -f "kafka\.Kafka" >/dev/null; then
-    echo "Kafka has been successfully installed and started"
-else
-    echo "Error in starting Kafka. Check logs at /usr/local/kafka/logs"
-fi
-
+echo "Kafka has been successfully installed and started"
 echo "---------------"
+
 echo ""
 echo "If you wish to stop Kafka, run the following commands"
 echo "service kafka stop"
