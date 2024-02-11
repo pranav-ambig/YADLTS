@@ -1,16 +1,17 @@
-FROM ubuntu:20.04
+FROM python:3.10.8-alpine
 
-# Set the environment variable to noninteractive
-ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
 
-RUN apt-get update && \
-    apt-get install -y \
-    dos2unix \
-    wget \
-    python3 \
-    tar \
-    openjdk-8-jdk\
-    python3-pip
+RUN apk --no-cache update && \
+    apk --no-cache add \
+        dos2unix \
+        wget \
+        python3 \
+        tar \
+        openjdk8-jre \
+        py3-pip \
+        bash \
+        openrc 
 
 WORKDIR /app
 

@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 start_dir=$(pwd)
 echo "Starting Kafka installation"
 cd
 
-apt-get update -y
-apt-get upgrade -y
+apk update
+apk upgrade
 
 # Delete previous zookeeper files and installations
 rm -rf kafka*
@@ -24,61 +24,71 @@ mv kafka_2.12-3.6.0 /usr/local/kafka
 
 # Setting up zookeeper.service
 echo "Setting up zookeeper.service"
-if [ -f "/etc/systemd/system/zookeeper.service" ]; then
-    rm /etc/systemd/system/zookeeper.service
+if [ -f "/etc/init.d/zookeeper" ]; then
+    rm /etc/init.d/zookeeper
 fi
-touch /etc/systemd/system/zookeeper.service
-chmod 777 /etc/systemd/system/zookeeper.service
+cat <<'EOF' > /etc/init.d/zookeeper
+#!/sbin/openrc-run
+description="Apache Zookeeper server"
 
-echo "[Unit]" >> /etc/systemd/system/zookeeper.service
-echo "Description=Apache Zookeeper server" >> /etc/systemd/system/zookeeper.service
-echo "Documentation=http://zookeeper.apache.org" >> /etc/systemd/system/zookeeper.service
-echo "Requires=network.target remote-fs.target" >> /etc/systemd/system/zookeeper.service
-echo "After=network.target remote-fs.target" >> /etc/systemd/system/zookeeper.service
-echo "" >> /etc/systemd/system/zookeeper.service
-echo "[Service]" >> /etc/systemd/system/zookeeper.service
-echo "Type=simple" >> /etc/systemd/system/zookeeper.service
-echo "ExecStart=/usr/local/kafka/bin/zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties" >> /etc/systemd/system/zookeeper.service
-echo "ExecStop=/usr/local/kafka/bin/zookeeper-server-stop.sh" >> /etc/systemd/system/zookeeper.service
-echo "Restart=on-abnormal" >> /etc/systemd/system/zookeeper.service
-echo "" >> /etc/systemd/system/zookeeper.service
-echo "[Install]" >> /etc/systemd/system/zookeeper.service
-echo "WantedBy=multi-user.target" >> /etc/systemd/system/zookeeper.service
-echo "" >> /etc/systemd/system/zookeeper.service
+depend() {
+    need net
+    after firewall
+}
+
+start() {
+    ebegin "Starting Zookeeper"
+    /usr/local/kafka/bin/zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping Zookeeper"
+    /usr/local/kafka/bin/zookeeper-server-stop.sh
+    eend $?
+}
+EOF
+chmod +x /etc/init.d/zookeeper
 
 # Setting up kafka.service
 echo "Setting up kafka.service"
-if [ -f "/etc/systemd/system/kafka.service" ]; then
-    rm /etc/systemd/system/kafka.service
+if [ -f "/etc/init.d/kafka" ]; then
+    rm /etc/init.d/kafka
 fi
-touch /etc/systemd/system/kafka.service
-chmod 777 /etc/systemd/system/kafka.service
+cat <<'EOF' > /etc/init.d/kafka
+#!/sbin/openrc-run
+description="Apache Kafka Server"
 
-echo "[Unit]" >> /etc/systemd/system/kafka.service
-echo "Description=Apache Kafka Server" >> /etc/systemd/system/kafka.service
-echo "Documentation=http://kafka.apache.org/documentation.html" >> /etc/systemd/system/kafka.service
-echo "Requires=zookeeper.service" >> /etc/systemd/system/kafka.service
-echo "" >> /etc/systemd/system/kafka.service
-echo "[Service]" >> /etc/systemd/system/kafka.service
-echo "Type=simple" >> /etc/systemd/system/kafka.service
-echo "Environment="JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"" >> /etc/systemd/system/kafka.service
-echo "ExecStart=/usr/local/kafka/bin/kafka-server-start.sh /usr/local/kafka/config/server.properties" >> /etc/systemd/system/kafka.service
-echo "ExecStop=/usr/local/kafka/bin/kafka-server-stop.sh" >> /etc/systemd/system/kafka.service
-echo "" >> /etc/systemd/system/kafka.service
-echo "[Install]" >> /etc/systemd/system/kafka.service
-echo "WantedBy=multi-user.target" >> /etc/systemd/system/kafka.service
-echo "" >> /etc/systemd/system/kafka.service
-echo "Successfully created services"
+depend() {
+    need zookeeper
+}
+
+start() {
+    ebegin "Starting Kafka"
+    /usr/local/kafka/bin/kafka-server-start.sh /usr/local/kafka/config/server.properties
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping Kafka"
+    /usr/local/kafka/bin/kafka-server-stop.sh
+    eend $?
+}
+EOF
+chmod +x /etc/init.d/kafka
+
+rc-update add zookeeper default
+rc-update add kafka default
 
 # Change ownership of the Kafka directory
-chown -R $USER:$USER /usr/local/kafka
+chown -R nobody:nogroup /usr/local/kafka
 
 # Start Zookeeper and Kafka
 /usr/local/kafka/bin/zookeeper-server-start.sh -daemon /usr/local/kafka/config/zookeeper.properties
 /usr/local/kafka/bin/kafka-server-start.sh -daemon /usr/local/kafka/config/server.properties
 
 # Sleep for a while to allow services to start
-sleep 5
+sleep 7
 
 echo "---------------"
 if pgrep -f "kafka\.Kafka" >/dev/null; then
@@ -90,9 +100,9 @@ fi
 echo "---------------"
 echo ""
 echo "If you wish to stop Kafka, run the following commands"
-echo "service stop kafka"
+echo "service kafka stop"
 
 echo "To check the status of Kafka, run the following command"
-echo "service status kafka"
+echo "service kafka status"
 
 cd $start_dir

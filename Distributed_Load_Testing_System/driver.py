@@ -6,7 +6,6 @@ from time import sleep, perf_counter
 import statistics
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Event
-from psutil import cpu_percent
 
 class Driver():
 
