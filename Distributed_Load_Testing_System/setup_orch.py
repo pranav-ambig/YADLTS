@@ -56,12 +56,13 @@ def trigger_push(producer, metrics, test_id, drivers_heartbeat, heartbeats, driv
     return
 
 
-def test_config_push(producer, test_type, test_message_delay, test_id, message_count_per_driver):
+def test_config_push(producer, test_type, test_message_delay, test_id, message_count_per_driver, num_drivers):
     config_msg = {
         "test_id": test_id,
         "test_type": test_type,
         "test_message_delay": test_message_delay,
-        "message_count_per_driver": message_count_per_driver
+        "message_count_per_driver": message_count_per_driver,
+        "num_drivers": num_drivers
     }
     to_consumer(producer, "test_config", config_msg)
 
@@ -134,7 +135,7 @@ def driver_metrics(drivers_metrics, metrics, sio, test_id, msg_count_per_driver,
                 metric_count = 0
             else:
                 metric_count += 1
-
+                
             if count >= max_req and not exit:
                 request_limit_event.set()
                 request_limit(producer, test_id, request_limit_event)

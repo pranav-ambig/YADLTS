@@ -1,13 +1,21 @@
 .SideBar {
-    width: 15rem;
-    background: linear-gradient(180deg, rgba(38, 34, 80, 0.65) 0%, rgba(27, 25, 66, 0.85) 57.44%, #17163B 100%);
-    height: 100vh;
+    /* width: 100%; */
+    /* background: linear-gradient(180deg, rgba(38, 34, 80, 0.65) 0%, rgba(27, 25, 66, 0.85) 57.44%, #17163B 100%); */
+    background-color: rgba(23, 21, 49, 0.65);
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    grid-area: "sidebar";
+    padding: 0.2rem 0rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
     position: fixed;
+}
+
+.SideBar > .blurred {
+    filter: blur(10px);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
 }
 
 p {
@@ -17,13 +25,14 @@ p {
 .heading {
     font-size: var(--fs-h3);
     color: white;
-    margin: 5rem 0;
 }
 
 .links {
     color: white;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-evenly;
+    z-index: 1;
 }
 
 .links > p {

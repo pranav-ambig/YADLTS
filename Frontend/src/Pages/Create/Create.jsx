@@ -3,6 +3,10 @@ import './Create.css'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../App';
+import SideBar from '../../Components/SideBar/SideBar';
+import NavBar from '../../Components/NavBar/NavBar';
+
+// TODO: Limit max throughput to 5
 
 const Create = (props)=>{
 
@@ -77,6 +81,8 @@ const Create = (props)=>{
 
     return (
         <div className="Create">
+            {/* <NavBar></NavBar> */}
+            <SideBar></SideBar>
             <h1 className='title'>New Load Test</h1>
             <div className="controls">
                 <div className="form">
@@ -90,10 +96,10 @@ const Create = (props)=>{
                     {DelThrSwitchLabel}
                     {DelThrSwitchInp}
                     <h2>Drivers</h2>
-                    <input type='number' min={0} max={8} id='numDrivers'></input>
+                    <input type='number' min={0} max={2} id='numDrivers'></input>
                 </div>
                 <div className='actions'>
-                    <h1 onClick={(ConfigSent)?trigger:sendTestData}>{(ConfigSent)?'Start Test':'Load Drivers'}</h1>
+                    <h1 className='wrappable' onClick={(ConfigSent)?trigger:sendTestData}>{(ConfigSent)?'Start Test':'Load Drivers'}</h1>
                     {/* <h1 onClick={trigger}>Start Test</h1> */}
                 </div>
             </div>

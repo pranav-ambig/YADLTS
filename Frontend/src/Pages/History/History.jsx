@@ -16,11 +16,6 @@ const History = ()=>{
     const [history, setHistory] = useState({});
     const [TestIds, setTestIds] = useState([]);
 
-
-    useEffect(()=>{
-        console.log(history[TestIds[0]])
-    }, [TestIds])
-
     useEffect(()=>{
         axios.get(BACKEND_URL+'/history')
         .then((res)=>{
@@ -28,8 +23,6 @@ const History = ()=>{
             setHistory(res.data.history)
             setTestIds(Object.keys(res.data.history))
             // console.log(res.data.history)
-    
-            console.log('sakfkds', res)
         })
     }, [])
 
