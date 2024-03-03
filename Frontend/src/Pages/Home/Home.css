@@ -13,10 +13,6 @@
     margin-top: 25vh;
 }
 
-/* .Home:last-child {
-    margin-bottom: 25vh;
-} */
-
 .vanta-bg {
     position: fixed;
     top: 0;
@@ -37,7 +33,7 @@
 
 .big {
     font-family: 'Poppins', sans-serif;
-    font-size: 5.5rem;
+    font-size: var(--fs-giant);
     font-weight: 500;
     width: fit-content;
 }

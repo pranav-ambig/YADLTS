@@ -14,7 +14,8 @@
 
 /* Variables */
 :root {
-  --fs-title: 2.5rem;
+  --fs-giant: 5.5rem;
+  --fs-title: 2rem;
   --fs-h1: 2rem;
   --fs-h2: 1.8rem;
   --fs-h3: 1.6rem;
@@ -28,6 +29,33 @@
   --Mewtwo: #b780eb;
   --Snivy: #61cc3a;
 }
+
+@media only screen and (min-width: 1080px) {
+
+  :root {
+    --fs-title: 3rem;
+    --fs-giant: 7rem;
+  }
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+h4 {
+  font-size: var(--fs-h4);
+}
+
+.title {
+  font-size: var(--fs-title);
+}
+
+
 
 body {
   background-color: #110a1f;

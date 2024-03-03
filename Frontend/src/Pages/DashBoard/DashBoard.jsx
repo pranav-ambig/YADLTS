@@ -45,9 +45,8 @@ const DashBoard = (props) => {
           setTestID('--')
         }
       })
-      .catch(()=>{})
     // }, 500)
-  }, [availableDrivers])
+  }, [TestStatus])
   
   return (
     <div className="DashBoard">

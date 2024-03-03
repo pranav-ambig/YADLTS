@@ -58,7 +58,7 @@ function App() {
     let y = e.clientY;
 
     let mouseShine = document.getElementById('mouse-shine');
-    let closest = e.target.closest('a')
+    let closest = e.target.closest('a,input,select')
 
     let translationKeyframes = {
       transform: `translate(${x}px, ${y}px)`,
@@ -66,6 +66,7 @@ function App() {
       height: `25px`,
       borderRadius: `50%`,
       opacity: 0.6,
+      // backdropFilter: 'blur(10px)'
     }
     
     if (closest){
@@ -73,30 +74,33 @@ function App() {
       let targetHeight = closest.offsetHeight;
       let targetX = closest.offsetLeft + (targetWidth/2);
       let targetY = closest.offsetTop + (targetHeight/2);
+      let targetBorderRadius =  getComputedStyle(closest).borderRadius;
+      // console.log(closest.style)
 
-      let adaptationKeyframes = {
-        width: `${targetWidth+20}px`,
-        height: `${targetHeight+20}px`,
-        borderRadius: `10px`,
-        opacity: 0.2,
-      }
-      mouseShine.animate(adaptationKeyframes, {
-        duration: 300,
-      })
+      // let adaptationKeyframes = {
+      //   width: `${targetWidth+20}px`,
+      //   height: `${targetHeight+20}px`,
+      //   borderRadius: `10px`,
+      //   opacity: 0.2,
+      // }
+      // mouseShine.animate(adaptationKeyframes, {
+      //   duration: 200,
+      // })
 
       translationKeyframes = {
         transform: `translate(${x}px, ${y}px)`,
         width: `${targetWidth+20}px`,
         height: `${targetHeight+20}px`,
-        borderRadius: `10px`,
+        borderRadius: `max(10px,${targetBorderRadius})`,
         transform: `translate(${targetX}px, ${targetY}px)`,
-        opacity: 0.2,
+        opacity: 0.1,
+        filter: 'none'
       }
 
     }
 
     mouseShine.animate(translationKeyframes, {
-      duration: 300,
+      duration: 200,
       fill: 'forwards',
     })
   }

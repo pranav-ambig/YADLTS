@@ -107,9 +107,10 @@ def test_config_endpoint():
     else:
         return jsonify({"status": "error", "message": "This URL doesnot allow testing!"}), 400
 
-'''
+
 @app.route('/timeout', methods=['post'])
 def user_timeout():
+    return jsonify({"status": "termination", "message": "Inavctivity detected!"})
     data = request.get_json()
     test_id = data.get('test_id')
     active = data.get('active')
@@ -132,7 +133,7 @@ def user_timeout():
             print("Timer stopped.")
 
     return jsonify({"status": "termination", "message": "Inavctivity detected!"})
-'''
+
 
 @app.route('/trigger', methods=['POST'])
 def trigger_endpoint():
