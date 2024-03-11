@@ -10,7 +10,7 @@ const NavBar = ()=>{
             {/* <div className='blur-bg'></div> */}
             <div className="nav-links">
                 <div className='left-links' onClick={()=>{navigate('/')}}>
-                    <img src="/horizontal_logo.png" className='horz-logo'/>
+                    <img src="/horizontal_logo.png" className='horz-logo' data-cursor-trigger="logo"/>
                 </div>
                 <div className="right-links">
                     <a onClick={()=>{navigate('/create')}}>Create</a>

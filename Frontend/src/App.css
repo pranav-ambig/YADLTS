@@ -36,6 +36,9 @@ h3 {
   font-size: var(--fs-h3);
 }
 
+
+/* Mouse shine specific stuff */
+
 #mouse-shine {
   width: 25px;
   height: 25px;
@@ -46,4 +49,21 @@ h3 {
   translate: -50% -50%;
   opacity: 0.6;
   pointer-events: none;
+  display: grid;
+  place-items: center;
+  /* color: black; */
+}
+
+.explore-div {
+  display: grid;
+  place-items: center;
+  opacity: 1;
+  /* pointer-events: all; */
+  cursor: pointer;
+}
+
+.explore-h3 {
+  color: black;
+  font-size: 1.2rem;
+  z-index: 1;
 }

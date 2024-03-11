@@ -34,7 +34,7 @@
 .right-links > a {
     margin: 1.5rem;
     color: white;
-    font-size: 1.2rem;
+    font-size: var(--fs-links);
     opacity: 0.8;
     cursor: pointer;
     transition: all 0.25s ease;

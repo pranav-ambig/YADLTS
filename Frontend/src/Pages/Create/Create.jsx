@@ -100,7 +100,6 @@ const Create = (props)=>{
                 </div>
                 <div className='actions'>
                     <h1 className='wrappable' onClick={(ConfigSent)?trigger:sendTestData}>{(ConfigSent)?'Start Test':'Load Drivers'}</h1>
-
                 </div>
             </div>
         </div>
