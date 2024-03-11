@@ -2,7 +2,7 @@ name: Build and Push Docker image to Docker Hub
 
 on: 
   push:
-    branches: ['main']
+    branches: ['alpine']
     
 jobs:
   push_to_registry:
