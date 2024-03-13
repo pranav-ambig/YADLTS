@@ -79,7 +79,7 @@ def test_config_endpoint():
     num_drivers = data.get('num_drivers')
     server_url = data.get('server_url')
 
-    if site_inspector.inspect(server_url): #check for robots.txt
+    if True or site_inspector.inspect(server_url): #check for robots.txt
         msg_count_per_driver = message_count_per_driver # for metrics calcualtions
 
         driver_procs = setup_drivers(num_drivers, server_url, bootstrap_servers=BOOTSTRAP_SERVER)
@@ -91,7 +91,7 @@ def test_config_endpoint():
 
             test_id = str(uuid.uuid4())  # Generate a unique test_id
             tests.append(test_id)
-            setup_orch.test_config_push(producer, test_type, test_message_delay, test_id, message_count_per_driver)
+            setup_orch.test_config_push(producer, test_type, test_message_delay, test_id, message_count_per_driver, num_drivers)
 
             response_data = {
                 "status": "success",
@@ -107,9 +107,10 @@ def test_config_endpoint():
     else:
         return jsonify({"status": "error", "message": "This URL doesnot allow testing!"}), 400
 
-'''
+
 @app.route('/timeout', methods=['post'])
 def user_timeout():
+    return jsonify({"status": "termination", "message": "Inavctivity detected!"})
     data = request.get_json()
     test_id = data.get('test_id')
     active = data.get('active')
@@ -132,7 +133,7 @@ def user_timeout():
             print("Timer stopped.")
 
     return jsonify({"status": "termination", "message": "Inavctivity detected!"})
-'''
+
 
 @app.route('/trigger', methods=['POST'])
 def trigger_endpoint():

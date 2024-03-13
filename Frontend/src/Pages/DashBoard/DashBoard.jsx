@@ -5,6 +5,7 @@ import axios from "axios"
 import RealtimeMetricBox from '../../Components/RealtimeMetricBox/RealtimeMetricBox';
 import RealtimeMetricBoxMini from '../../Components/RealtimeMetricBoxMini/RealtimeMetricBoxMini'
 import { BACKEND_URL } from '../../App';
+import SideBar from '../../Components/SideBar/SideBar';
 
 const DashBoard = (props) => {
 
@@ -28,7 +29,7 @@ const DashBoard = (props) => {
                 return(
                 <div key={i} className='ChartBlock'>
                   <div className="img-ctn">
-                    <img src={`\\public\\${pokemon}.gif`}></img>
+                    <img src={`\\${pokemon}.gif`}></img>
                   </div>
                   <RealtimeMetricBoxMini name={pokemon} miniMode={true}></RealtimeMetricBoxMini>
                   <RealtimeChart color='#EC8F5E' name={pokemon}></RealtimeChart>
@@ -44,12 +45,12 @@ const DashBoard = (props) => {
           setTestID('--')
         }
       })
-      .catch(()=>{})
     // }, 500)
-  }, [availableDrivers])
+  }, [TestStatus])
   
   return (
     <div className="DashBoard">
+      <SideBar></SideBar>
       <div className='dash-spacer'></div>
       <h3>Test ID: {testID}</h3>
       <div className="MainChartMetrics">

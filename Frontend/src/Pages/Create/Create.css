@@ -1,14 +1,17 @@
 .Create {
-    width: 100%;
-    height: 100%;
-    padding: 2rem;
+    /* width: 100%;
+    height: 100%; */
+    /* padding: 2rem; */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .Create h2 {
     font-size: 1.3rem;
 }
 
-.Create > * {
+.Create > *:not(.SideBar) {
     margin: 2rem;
 }
 
@@ -19,12 +22,15 @@
 
 .Create > .title {
     /* text-align: center; */
-    margin-left: 2rem;
+    /* margin-left: 2rem; */
+    width: 100%;
+
 }
 
 .controls {
     display: flex;
     gap: 1rem;
+    width: 100%;
 }
 
 .form {

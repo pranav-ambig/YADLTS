@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Roboto:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 :root {
   
@@ -13,14 +14,17 @@
 
 /* Variables */
 :root {
-  --fs-title: 2.5rem;
+  --fs-giant: 5.5rem;
+  --fs-title-med: 4rem; 
+  --fs-title: 2rem;
   --fs-h1: 2rem;
   --fs-h2: 1.8rem;
   --fs-h3: 1.6rem;
   --fs-h4: 1rem;
-  --Charizard: #EC8F5E;
-  --Blastoise: #A0E9FF;
-  --Venusaur: #409b1f;
+  --fs-links: 1.2rem;
+  --Charizard: #ff894a;
+  --Blastoise: #47d4ff;
+  --Venusaur: #84ff57;
   --Tentacruel: #FF409A ;
   --Pikachu: #fcdc3f;
   --Zapdos: #FFFB73;
@@ -28,6 +32,180 @@
   --Snivy: #61cc3a;
 }
 
+a {
+  cursor: pointer;
+}
+
+.charizard {
+  color: var(--Charizard);
+  position: relative;
+}
+
+.charizard::before {
+  width: 100%;
+  height: 100%;
+  background-color: #ff894a33;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.blastoise {
+  color: var(--Blastoise);
+  position: relative;
+}
+
+.blastoise::before {
+  width: 100%;
+  height: 100%;
+  background-color: #47d4ff33;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.venusaur {
+  color: var(--Venusaur);
+  position: relative;
+}
+
+.venusaur::before {
+  width: 100%;
+  height: 100%;
+  background-color: #84ff5733;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.tentacruel {
+  color: var(--Tentacruel);
+  position: relative;
+}
+
+.tentacruel::before {
+  width: 100%;
+  height: 100%;
+  background-color: #FF409A33;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.pikachu {
+  color: var(--Pikachu);
+  position: relative;
+}
+
+.pikachu::before {
+  width: 100%;
+  height: 100%;
+  background-color: #fcdc3f33;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.zapdos {
+  color: var(--Zapdos);
+  position: relative;
+}
+
+.zapdos::before {
+  width: 100%;
+  height: 100%;
+  background-color: #FFFB7333;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.mewtwo {
+  color: var(--Mewtwo);
+  position: relative;
+}
+
+.mewtwo::before {
+  width: 100%;
+  height: 100%;
+  background-color: #b780eb33;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.snivy {
+  color: var(--Snivy);
+  position: relative;
+}
+
+.snivy::before {
+  width: 100%;
+  height: 100%;
+  background-color: #61cc3a33;
+  z-index: -1;
+  content: "";
+  position: absolute;
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+
+@media only screen and (min-width: 1080px) {
+
+  :root {
+    --fs-title: 3rem;
+    --fs-giant: 6rem;
+  }
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+h4 {
+  font-size: var(--fs-h4);
+}
+
+.title {
+  font-size: var(--fs-title);
+}
+
+
+
 body {
-  background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%);
+  background-color: #0e0819;
+  /* background: hsla(230, 61%, 35%, 1);
+  background: linear-gradient(180deg, #1e314e 17%, hsla(0, 0%, 5%, 1) 98%);
+  background: -moz-linear-gradient(180deg, #1e314e 17%, hsla(0, 0%, 5%, 1) 98%);
+  background: -webkit-linear-gradient(180deg, #1e314e 17%, hsla(0, 0%, 5%, 1) 98%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#233590", endColorstr="#0C0C0C", GradientType=1 ); */
+  /* background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%); */
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }

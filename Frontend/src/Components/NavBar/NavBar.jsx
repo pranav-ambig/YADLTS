@@ -7,12 +7,13 @@ const NavBar = ()=>{
 
     return (
         <div className="NavBar">
+            {/* <div className='blur-bg'></div> */}
             <div className="nav-links">
-                <div className='left-links'>
-                    <h1 className='curr-page'>Dashboard</h1>
+                <div className='left-links' onClick={()=>{navigate('/')}}>
+                    <img src="/horizontal_logo.png" className='horz-logo' data-cursor-trigger="logo"/>
                 </div>
                 <div className="right-links">
-                    <a onClick={()=>{navigate('/')}}>Create</a>
+                    <a onClick={()=>{navigate('/create')}}>Create</a>
                     <a onClick={()=>{navigate('/view')}}>View</a>
                     <a onClick={()=>{navigate('/history')}}>History</a>
                 </div>

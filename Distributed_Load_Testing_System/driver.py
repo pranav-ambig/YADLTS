@@ -6,6 +6,8 @@ from time import sleep, perf_counter
 import statistics
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Event
+from multiprocessing import cpu_count
+from psutil import cpu_percent
 
 class Driver():
 
@@ -15,8 +17,7 @@ class Driver():
         self.driver_threads = []
         self.current_test_config = {}
         self.bootstrap_servers = bootstrap_servers
-        self.server_url = server_url + '/ping'
-        self.info(self.server_url)
+        self.server_url = server_url
         self.test_active = Event()
         self.test_active.clear()
         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
@@ -81,6 +82,7 @@ class Driver():
                 #self.server_url = 'https://www.google.com/error'
                 break
         if bombardThread:
+            print('joined, waiting')
             bombardThread.join()
     
     def bombard(self):
@@ -97,6 +99,9 @@ class Driver():
 
         def send_req():
             nonlocal req_sent, min_latency, max_latency, sum_latency
+
+            if not self.test_active.is_set():
+                return
             try:
                 start_time = perf_counter()
                 response = requests.get(self.server_url)
@@ -124,11 +129,18 @@ class Driver():
                     }
                 }
                 self.producer.send("metrics", value=json.dumps(metrics_data).encode("utf-8"))
-
             except requests.exceptions.ConnectionError:
-                self.stop_test(self)
+                self.stop_test()
                 return
         
+
+        threads_available = int(cpu_count()/self.current_test_config['num_drivers'])
+        requests_per_thread = int(int(self.current_test_config["message_count_per_driver"])/threads_available)
+
+        def looped_requests():
+            for _ in range(requests_per_thread):
+                send_req()
+
         if self.current_test_config["test_type"] == "TSUNAMI":
             while self.test_active.is_set():
                 send_req()
@@ -138,15 +150,18 @@ class Driver():
             self.send_heartbeat("NO")
             return
         else:
-            with ThreadPoolExecutor(max_workers=int(self.current_test_config["message_count_per_driver"])) as executor:
-                while True:
-                    for _ in range(int(self.current_test_config["message_count_per_driver"])):
-                        executor.submit(send_req)
-                    sleep(1)
-                    if not self.test_active.is_set(): 
-                        self.info("Server crashed")
-                        self.send_heartbeat("NO")
-                        return
+            # with ThreadPoolExecutor(max_workers=cpu_count/int(self.current_test_config['num_drivers'])) as executor:
+            executor = ThreadPoolExecutor(max_workers=threads_available)
+            while True:
+                for _ in range(threads_available):
+                    executor.submit(looped_requests)
+                sleep(1)
+                # self.info(cpu_percent(interval=0.1))
+                if not self.test_active.is_set():
+                    executor.shutdown(wait=False, cancel_futures=True)
+                    self.info("Server crashed")
+                    self.send_heartbeat("NO")
+                    return
 
 
     def send_heartbeat(self, yesno):
@@ -168,6 +183,7 @@ class Driver():
     def join_consumers(self):
         for thread in self.driver_threads:
             thread.join()
+        self.info('Driver stopped')
 
     def register(self):
         register_dict = {

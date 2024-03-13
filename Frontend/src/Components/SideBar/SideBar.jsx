@@ -32,14 +32,15 @@ const SideBar = () => {
         }
       }
       ).catch(()=>{})
-    }, 500)
+    }, 250)
   }, [])
 
     return (
       <div className="SideBar">
-        <h3 className='heading'>Drivers</h3>
-        
+        <div className="blurred"></div>
+        <div className="pokemons">
         {pokemons}
+        </div>
         {/* <div className="links">
           <a className='char'>Charizard</a>
           <a className='blas'>Blastoise</a>

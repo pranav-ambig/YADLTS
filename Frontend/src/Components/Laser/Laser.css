@@ -1,0 +1,24 @@
+.laser-ctn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    mask: linear-gradient(transparent, black, transparent);
+    position: relative;
+    height: 110vh;
+}
+
+.laser {
+    transform: translate(25%, 0%);
+}
+
+.bulb {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    /* background-color: var(--Blastoise); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

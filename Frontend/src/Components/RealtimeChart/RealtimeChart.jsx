@@ -207,7 +207,7 @@ const RealtimeChart = (props) => {
 
     // Clear the interval on component unmount
     
-  }, [chartData]);
+  }, []);
   
 
   return (

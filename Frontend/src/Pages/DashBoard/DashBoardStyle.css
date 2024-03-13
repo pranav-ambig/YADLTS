@@ -14,20 +14,13 @@
     margin: 1.2rem 0;
 }
 
-.DashBoard > h1 {
-    font-size: var(--fs-title);
-    font-weight: 500;
-    margin: 4.5rem 0 0 0;
-    align-self: flex-start;
-}
-
 .DashBoard > h3 {
     font-size: var(--fs-h3);
     align-self: baseline;
 }
 
 .dash-spacer {
-    height: 2rem;
+    height: 1rem;
     width: 100%;
 }
 

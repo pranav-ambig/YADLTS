@@ -9,9 +9,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import History from './Pages/History/History'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Home from './Pages/Home/Home'
+
 
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-console.log('test', BACKEND_URL)
+// console.log('test', BACKEND_URL)
 
 const socket = io(BACKEND_URL, {
     withCredentials: true,
@@ -19,6 +21,16 @@ const socket = io(BACKEND_URL, {
       'Access-Control-Allow-Origin': 'http://localhost:5173',
     },
 });
+
+// const exploreDiv = 
+// <div className="explorediv">
+
+// </div>
+
+const custTestsScoller = ()=>{
+  let custTests = document.getElementById('customised-tests')
+  custTests.scrollIntoView({behavior: 'smooth', block: 'center'})
+}
 
 function App() {
 
@@ -29,7 +41,6 @@ function App() {
     if (testID === '--') {
       return
     }
-
     if (document.visibilityState === 'hidden'){
       axios.post(BACKEND_URL+'/timeout', {
         test_id: testID,
@@ -45,22 +56,144 @@ function App() {
   }
 
   useEffect(()=>{
-
     document.addEventListener('visibilitychange', handleVisibilityChange)
     return ()=>{
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-
   }, [testID])
+
+  const moveMouseShine = (e)=>{
+
+    let x = e.clientX;
+    let y = e.clientY;
+
+    let mouseShine = document.getElementById('mouse-shine');
+    let closest = e.target.closest('a,input,select')
+    let closestElement = e.target.closest('*')
+
+    let translationKeyframes = {
+      transform: `translate(${x}px, ${y}px)`,
+      width: `25px`,
+      height: `25px`,
+      borderRadius: `50%`,
+      opacity: 0.6,
+      zIndex: 10,
+      filter: 'none',
+      mixBlendMode: 'normal',
+    }
+
+    let cursorTriggerValue = closestElement.getAttribute('data-cursor-trigger')
+
+    if (cursorTriggerValue !== null){
+
+      let targetWidth = closestElement.offsetWidth;
+      let targetHeight = closestElement.offsetHeight;
+      let targetX = closestElement.offsetLeft + (targetWidth/2);
+      let targetY = closestElement.offsetTop + (targetHeight/2);
+
+      if (cursorTriggerValue == 'logo'){
+        translationKeyframes = {
+          transform: `translate(${x}px, ${y}px)`,
+          width: `50px`,
+          height: `50px`,
+          borderRadius: `100%`,
+          transform: `translate(${x}px, ${y}px)`,
+          opacity: 1,
+          zIndex: 10,
+          mixBlendMode: 'difference',
+        }
+      }
+      else if (cursorTriggerValue == 'explore') {
+        translationKeyframes = {
+          transform: `translate(${x}px, ${y}px)`,
+          width: `100px`,
+          height: `100px`,
+          borderRadius: `100%`,
+          transform: `translate(${x}px, ${y}px)`,
+          opacity: 1,
+          zIndex: 10,
+        }
+        if (mouseShine.childElementCount == 0){
+
+          document.addEventListener('click', custTestsScoller)
+
+          let exploreElement = document.createElement('div')
+          exploreElement.id = 'explore-div'
+          exploreElement.classList.add('explore-div')
+
+          let exploreH3 = document.createElement('h3')
+          exploreH3.innerHTML = 'Explore'
+          exploreH3.classList.add('explore-h3')
+          
+
+          let exploreDownIcon = document.createElement('div')
+          exploreDownIcon.innerHTML = '<i class="fa-solid fa-arrow-down"></i>'
+
+          exploreElement.appendChild(exploreH3)
+          exploreElement.appendChild(exploreDownIcon)
+
+          mouseShine.appendChild(exploreElement)
+        }
+      }
+    }
+    else {
+      if (mouseShine.childElementCount == 1){
+        mouseShine.removeChild(document.getElementById('explore-div'))
+        document.removeEventListener('click', custTestsScoller)
+      }
+    }
+
+
+    if (closest){
+
+      let boundingRect = closest.getBoundingClientRect()
+
+      let targetWidth = closest.offsetWidth;
+      let targetHeight = closest.offsetHeight;
+      let targetX = boundingRect.left + (targetWidth/2);
+      let targetY = boundingRect.top + (targetHeight/2);
+      let targetBorderRadius =  getComputedStyle(closest).borderRadius;
+
+      translationKeyframes = {
+        transform: `translate(${x}px, ${y}px)`,
+        width: `${targetWidth+20}px`,
+        height: `${targetHeight+20}px`,
+        borderRadius: `max(10px,${targetBorderRadius})`,
+        transform: `translate(${targetX}px, ${targetY}px)`,
+        opacity: 0.1,
+        zIndex: 10,
+      }
+    }
+    mouseShine.animate(translationKeyframes, {
+      duration: 200,
+      fill: 'forwards',
+    })
+  }
+
+  useEffect(()=>{
+    document.addEventListener('mousemove', moveMouseShine)
+    document.addEventListener('scroll', moveMouseShine)
+    document.addEventListener('wheel', moveMouseShine)
+
+    return ()=>{
+      document.removeEventListener('mousemove', moveMouseShine)
+      document.removeEventListener('scroll', moveMouseShine)
+      document.removeEventListener('wheel', moveMouseShine)
+    }
+
+  }, [])
+
+
 
   return (
     <div className='App'>
-      <SideBar></SideBar>
+      <div id='mouse-shine'></div>
       <div className='routed-comp'>
         <BrowserRouter>
           <NavBar></NavBar>
           <Routes>
-            <Route path='/' element={<Create testID={testID} setTestID={setTestID} ></Create>}></Route>
+            <Route path='/' element={<Home></Home>}></Route>
+            <Route path='/create' element={<Create testID={testID} setTestID={setTestID} ></Create>}></Route>
             <Route path='/view' element={<DashBoard testID={testID} setTestID={setTestID} ></DashBoard>}></Route>
             <Route path='/history' element={<History></History>}></Route>
           </Routes>
