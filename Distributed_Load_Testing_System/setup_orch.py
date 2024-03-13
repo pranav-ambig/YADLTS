@@ -5,7 +5,6 @@ import json
 import threading
 import statistics
 from time import sleep
-import psutil
 
 # FUNCTIONALITY
 
