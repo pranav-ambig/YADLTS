@@ -10,6 +10,7 @@ import History from './Pages/History/History'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Home from './Pages/Home/Home'
+import { createContext } from 'react'
 
 
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
@@ -31,6 +32,8 @@ const custTestsScoller = ()=>{
   let custTests = document.getElementById('customised-tests')
   custTests.scrollIntoView({behavior: 'smooth', block: 'center'})
 }
+
+export const globalContext = createContext({});
 
 function App() {
 
@@ -183,23 +186,23 @@ function App() {
 
   }, [])
 
-
-
   return (
-    <div className='App'>
-      <div id='mouse-shine'></div>
-      <div className='routed-comp'>
-        <BrowserRouter>
-          <NavBar></NavBar>
-          <Routes>
-            <Route path='/' element={<Home></Home>}></Route>
-            <Route path='/create' element={<Create testID={testID} setTestID={setTestID} ></Create>}></Route>
-            <Route path='/view' element={<DashBoard testID={testID} setTestID={setTestID} ></DashBoard>}></Route>
-            <Route path='/history' element={<History></History>}></Route>
-          </Routes>
-        </BrowserRouter>
+    <globalContext.Provider value={{testID, setTestID}}>
+      <div className='App'>
+        <div id='mouse-shine'></div>
+        <div className='routed-comp'>
+          <BrowserRouter>
+            <NavBar></NavBar>
+            <Routes>
+              <Route path='/' element={<Home></Home>}></Route>
+              <Route path='/create' element={<Create ></Create>}></Route>
+              <Route path='/view' element={<DashBoard ></DashBoard>}></Route>
+              <Route path='/history' element={<History></History>}></Route>
+            </Routes>
+          </BrowserRouter>
+        </div>
       </div>
-    </div>
+    </globalContext.Provider>
   )
 }
 

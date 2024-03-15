@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import './Create.css'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
-import { BACKEND_URL } from '../../App';
+import { BACKEND_URL, globalContext } from '../../App';
 import SideBar from '../../Components/SideBar/SideBar';
 import NavBar from '../../Components/NavBar/NavBar';
 
@@ -14,9 +14,9 @@ const Create = (props)=>{
     const [DelThrSwitchInp, setDelThrSwitchInp] = useState(<input type='number' min={0} id='throughput'></input>);
     const [ConfigSent, setConfigSent] = useState(false);
 
-    const navigate = useNavigate();
     
-    let {testID, setTestID} = props
+    const navigate = useNavigate();
+    const {testID, setTestID} = useContext(globalContext);
 
     const sendTestData = ()=>{
         let server_url = document.getElementById('server-url')

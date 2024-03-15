@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { socket } from '../../App';
 import {
   Chart as ChartJS,
@@ -82,7 +82,9 @@ const RealtimeChart = (props) => {
   };
 
 
-  const [chartData, setChartData] = useState({
+  const chartRef = useRef(null);
+
+  const chartData = useRef({
     labels: [],
     datasets: [
       {
@@ -175,33 +177,48 @@ const RealtimeChart = (props) => {
         tension:  0.4,
       },
     ],
-  });
+  })
+
+  // const [chartData, setChartData] = useState();
 
   useEffect(() => {
     
     socket.on(props.name, (data)=>{
-      setChartData((prevData) => {
-        const newLabels = [...prevData.labels, new Date().toLocaleTimeString()];
 
-        let newDatasets = [];
-        prevData.datasets.forEach(metric=>{
-          newDatasets.push({
-            ...metric,
-            data: [...metric.data, data["metrics"][metric.label]]
-          })
+      let lineChart = chartRef.current;
+      // console.log(lineChart)
+
+      if (lineChart !== null){
+        lineChart.data.labels.push(new Date().toLocaleTimeString());
+        lineChart.data.datasets.forEach(metric=>{
+          // console.log(metric['data'])
+          metric['data'].push(data["metrics"][metric.label])
         })
-        // if (newLabels.length > maxDatapoints){
-        //   newLabels.shift()
-        //   newDatasets.forEach(metric=>{
-        //     metric.data.shift()
-        //   })
-        // }
+        lineChart.update()
+      }
 
-        return {
-          labels: newLabels,
-          datasets: newDatasets,
-        };
-      });
+      // setChartData((prevData) => {
+      //   const newLabels = [...prevData.labels, new Date().toLocaleTimeString()];
+
+      //   let newDatasets = [];
+      //   prevData.datasets.forEach(metric=>{
+      //     newDatasets.push({
+      //       ...metric,
+      //       data: [...metric.data, data["metrics"][metric.label]]
+      //     })
+      //   })
+      //   // if (newLabels.length > maxDatapoints){
+      //   //   newLabels.shift()
+      //   //   newDatasets.forEach(metric=>{
+      //   //     metric.data.shift()
+      //   //   })
+      //   // }
+
+      //   return {
+      //     labels: newLabels,
+      //     datasets: newDatasets,
+      //   };
+      // });
 
     })
 
@@ -214,7 +231,8 @@ const RealtimeChart = (props) => {
     <div className="RealtimeChart">
       <Line 
         options={options} 
-        data={chartData}
+        data={chartData.current}
+        ref={chartRef}
         ></Line>
     </div>
   );

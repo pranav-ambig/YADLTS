@@ -1,15 +1,16 @@
 import './DashBoardStyle.css'
 import RealtimeChart from '../../Components/RealtimeChart/RealtimeChart';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from "axios"
 import RealtimeMetricBox from '../../Components/RealtimeMetricBox/RealtimeMetricBox';
 import RealtimeMetricBoxMini from '../../Components/RealtimeMetricBoxMini/RealtimeMetricBoxMini'
 import { BACKEND_URL } from '../../App';
 import SideBar from '../../Components/SideBar/SideBar';
+import { globalContext } from '../../App';
 
-const DashBoard = (props) => {
+const DashBoard = () => {
 
-  const {testID, setTestID} = props
+  const {testID, setTestID} = useContext(globalContext);
   const [availableDrivers, setAvailabeDrivers] = useState(0);
   const [TestStatus, setTestStatus] = useState("Idle");
 
@@ -46,7 +47,7 @@ const DashBoard = (props) => {
         }
       })
     // }, 500)
-  }, [TestStatus])
+  }, [availableDrivers])
   
   return (
     <div className="DashBoard">
@@ -55,7 +56,6 @@ const DashBoard = (props) => {
       <h3>Test ID: {testID}</h3>
       <div className="MainChartMetrics">
         <div className="MainChart">
-          {/* <h2>Status: {TestStatus}</h2> */}
           <RealtimeChart color='#ffffff' name='test_metrics' bigChart={true}></RealtimeChart>
         </div>
         <div className="MainMetrics">

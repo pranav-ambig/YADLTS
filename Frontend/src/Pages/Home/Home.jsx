@@ -4,51 +4,60 @@ import { useEffect, useState, useRef } from 'react'
 import NET from 'vanta/dist/vanta.net.min'
 import { motion } from "framer-motion"
 import Laser from '../../Components/Laser/Laser'
+import InfosecTitle from '../../Components/InfosecTitle/InfosecTitle'
 
 const Home = () => {
 
-  const draw = {
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: (i) => {
-      const delay = 1 + i * 0.5;
-      return {
-        pathLength: 1,
-        opacity: 1,
-        transition: {
-          pathLength: { delay, type: "spring", duration: 1.5, bounce: 0 },
-          opacity: { delay, duration: 0.01 }
-        }
-      };
-    }
-  };
-
   const [vantaEffect, setVantaEffect] = useState(null);
-  const [mouseControls, setMouseControls] = useState(true);
+  const [vantaOn, setVantaOn] = useState(false);
+  
   useEffect(() => {
-    if (!vantaEffect) {
+    setVantaOn(true)
+  }, [])
+
+  useEffect(()=>{
+    if (vantaOn) {
       setVantaEffect(NET({
         el: ".vanta-bg",
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1,
-        scaleMobile: 1.00,
+        minHeight: 100.00,
+        minWidth: 100.00,
+        scale: 1.2,
+        scaleMobile: 1.2,
         color: 0x5a9dfc,
         backgroundColor: 0x110a1f,
         
       }))
+      setVantaOn(true)
+    }
+    else {
+      setVantaEffect(null)
     }
     return () => {
       if (vantaEffect) vantaEffect.destroy()
     }
-  }, [vantaEffect])
+  }, [vantaOn])
+
+  // const vantaHandler = (e)=>{
+  //   let scrollPos = e.offsetTop;
+  //   let windowHeight = window.innerHeight;
+  //   console.log(scrollPos, windowHeight)
+  //   if (scrollPos > windowHeight) {
+  //     setVantaOn(false);
+  //   }
+  //   else {
+  //     if (!vantaOn){
+  //       setVantaOn(true)
+  //     }
+  //   }
+  // }
+
 
   return (
     <div className='Home'>
       <div className='vanta-bg'></div>
-
 
       <div className="main-title">
         <h1 className='big' >Server Testing</h1>
@@ -60,77 +69,46 @@ const Home = () => {
         data-cursor-trigger="explore"
       >trigger</div>
 
-      {/* <div className='blur-gradient'></div> */}
-
       <div className="infosec">
-
-        {/* <div className="laser-ctn">
-          <div className="bulb blas-shadow">
-          </div>
-          <motion.svg
-            width="10"
-            height="800"
-            viewBox="0 0 10 800"
-            initial="hidden"
-            animate="visible"
-            className='laser'
-          >
-            <motion.line
-              x1={0}
-              x2={0}
-              y1={0}
-              y2={800}
-              stroke={'#47d4ff'}
-              strokeWidth={10}
-              cen
-              custom={1}
-          
-            />
-          </motion.svg>
-        </div> */}
         <div className='laser-title-ctn'>
-          {/* <img src='/images/createPage.png' className='bg-eg-image'></img> */}
           <Laser color='#47d4ff'></Laser>
-          <div className="titles">
-            <h1 className='med blastoise' id='customised-tests'>Customised Tests</h1>
-            <h3 className="title-desc">
-              Simulate sustained pressure or sudden traffic surges to assess your system's resilience.
-            </h3>
-            {/* <div className='cursor-trigger big'
-              data-cursor-trigger="explore"
-            >trigger</div> */}
-          </div>
+          <InfosecTitle 
+            title='Customised Tests'
+            desc="Simulate sustained pressure or sudden traffic surges to assess your system's resilience."
+            titleId='customised-tests'
+            color='blastoise'
+          ></InfosecTitle>
         </div>
 
         <div className='laser-title-ctn'>
           <Laser color='#fcdc3f'></Laser>
-          <div className="titles">
-            <h1 className='med pikachu'>In-Depth Analysis</h1>
-            <h3 className="title-desc">
-              Gain comprehensive metrics and reports to analyze your test results effectively.
-            </h3>
-
-          </div>
+          <InfosecTitle 
+            title='In-Depth Analysis'
+            desc="Gain comprehensive metrics and reports to analyze your test results effectively."
+            titleId='in-dep-an'
+            color='pikachu'
+          ></InfosecTitle>
         </div>
+
 
         <div className='laser-title-ctn'>
           <Laser color='#84ff57'></Laser>
-          <div className="titles">
-            <h1 className='med venusaur'>Distributed Testing</h1>
-            <h3 className="title-desc">            
-              Stress test your web server with Poké-powered load testing!
-            </h3>
-          </div>
+          <InfosecTitle 
+            title='Distributed Testing'
+            desc="Stress test your web server with Poké-powered load testing!"
+            titleId='dist-test'
+            color='venusaur'
+          ></InfosecTitle>
         </div>
 
         <div className='laser-title-ctn'>
           <Laser color='#ff894a'></Laser>
-          <div className="titles">
-            <h1 className='med charizard'>Impressive Throughput</h1>
-            <h3 className="title-desc">
-              Push your platform to its limits, simulating up to 500 requests per node.
-            </h3>
-          </div>
+          <InfosecTitle 
+            title='Impressive Throughput'
+            desc="Push your platform to its limits, simulating up to 500 requests per node."
+            titleId='imp-through'
+            color='charizard'
+          ></InfosecTitle>
         </div>
       </div>
       

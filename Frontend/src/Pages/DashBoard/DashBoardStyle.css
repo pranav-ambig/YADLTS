@@ -51,13 +51,12 @@
     flex: 3;
 }
 
-.MiniCharts {
+/* .MiniCharts {
     width: 100%;
-}
+} */
 
 .MiniCharts > .ChartBlock {
     margin: 2rem 0;
-    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 3fr;
     gap: 1rem;
