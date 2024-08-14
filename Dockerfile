@@ -11,7 +11,11 @@ RUN apk --no-cache update && \
         openjdk8-jre \
         py3-pip \
         bash \
-        openrc 
+        openrc \
+        gcc \
+        musl-dev \
+        python3-dev \
+        linux-headers
 
 WORKDIR /app
 

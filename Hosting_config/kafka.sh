@@ -15,12 +15,12 @@ fi
 
 # Download Kafka
 echo "Downloading Kafka binaries"
-wget https://downloads.apache.org/kafka/3.6.1/kafka_2.12-3.6.1.tgz
+wget https://downloads.apache.org/kafka/3.6.2/kafka_2.13-3.6.2.tgz
 
 # Extract Kafka
 echo "Decompressing tar archive for Kafka"
-tar -xf kafka_2.12-3.6.1.tgz
-mv kafka_2.12-3.6.1 /usr/local/kafka
+tar -xf kafka_2.13-3.6.2.tgz
+mv kafka_2.13-3.6.2 /usr/local/kafka
 
 # Setting up zookeeper.service
 echo "Setting up zookeeper.service"
