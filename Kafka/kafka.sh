@@ -15,7 +15,7 @@ fi
 
 # Download Kafka
 echo "Downloading Kafka binaries"
-wget https://downloads.apache.org/kafka/3.6.0/kafka_2.12-3.6.0.tgz
+wget https://archive.apache.org/dist/kafka/3.6.0/kafka_2.13-3.6.0.tgz
 
 # Extract Kafka
 echo "Decompressing tar archive for Kafka"
